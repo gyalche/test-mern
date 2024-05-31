@@ -1,8 +1,14 @@
-export interface userRegsterType extends Document {
+import { Document } from "mongoose";
+
+export interface userType extends Document {
     name: string,
     email: string,
     password: string,
-    profile:{
-        
-    }
+    profile?: {
+        public_id: string;
+        url: string;
+    },
+    comparePassword: (password: string) => Promise<boolean>;
+    SignAccessToken: () => string;
+    SignRefreshToken: () => string;
 }

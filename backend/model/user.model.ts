@@ -1,8 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
-
-const userSchema = new mongoose.Schema({
-
+import mongoose, { Model, Schema } from 'mongoose';
+import { emailRegexExpression } from '../utils/regex';
+import { userType } from '../@types/user';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+const userSchema: Schema<userType> = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Enter your name']
@@ -10,6 +12,11 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'please enter email'],
+        validate: {
+            validator: (value: string) => {
+                return emailRegexExpression.test(value)
+            }
+        },
         unique: true
     },
     password: {
@@ -25,6 +32,27 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-const userModel = mongoose.model('user', userSchema);
+userSchema.pre<userType>('save', async function (next) {
+    if (!this.isModified('password')) {
+        next()
+    }
+    this.password = await bcrypt?.hash(this.password, 10);
+    next()
+})
+
+userSchema.methods.comparePassword = async function (
+    enteredpassword: string
+): Promise<boolean> {
+    return bcrypt.compare(enteredpassword, this.password);
+};
+
+userSchema.methods.signInAccessToken = function () {
+    return jwt.sign({ id: this.password }, process.env.ACCESS_TOKEN_SECRET_KEY || '', { expiresIn: '10min' })
+}
+
+userSchema.methods.signInRefreshToken = function () {
+    return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET_KEY || '', { expiresIn: '6d' })
+}
+const userModel: Model<userType> = mongoose.model('users', userSchema);
 
 export default userModel;

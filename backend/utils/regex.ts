@@ -1,0 +1,1 @@
+export const emailRegexExpression: RegExp = /A[A-Z0-9+_.-]+@[A-Z0-9.-]+Z/;
