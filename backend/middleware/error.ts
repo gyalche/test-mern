@@ -10,25 +10,25 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
     //if wrong mongodbid error;
     if (err.name === 'CastError') {
         const message = `Resource not found`;
-        err = new ErrorHandler(message, 400);
+        err = new ErrorHandler(400, message);
     }
 
     //duplicate key error;
     if (err.code === 11000) {
         const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
-        err = new ErrorHandler(message, 400);
+        err = new ErrorHandler(400, message);
     }
 
     //wrong jwt error;
     if (err.name === 'JsonWebTokenError') {
         const message = `Json web token is invalid, try again`;
-        err = new ErrorHandler(message, 400);
+        err = new ErrorHandler(400, message);
     }
 
     //JWT expired error;
     if (err.name === 'TokenExpiredError') {
         const message = `Json web token is expired try again`;
-        err = new ErrorHandler(message, 400);
+        err = new ErrorHandler(400, message);
     }
     res.status(err.statusCode).json({
         success: false,

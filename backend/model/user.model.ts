@@ -22,8 +22,8 @@ const userSchema: Schema<userType> = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'please enter password'],
-        minlength: [4, 'password must be atleast 4 charcter'],
-        maxlength: [15, 'Password cannot acced 15 character']
+        // minLength: [4, 'password must be atleast 4 charcter'],
+        // maxlength: [15, 'Password cannot acced 15 character']
 
     },
     profile: {
