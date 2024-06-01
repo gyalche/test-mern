@@ -206,7 +206,7 @@ export const forgotPassword = catchAsyncError(async (req: any, res: Response, ne
     }
 })
 
-// update password code;
+// update password with code;
 export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { password, activation_code, token } = req.body;
@@ -234,6 +234,8 @@ export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Respon
         next(new ErrorHandler(400, error.message))
     }
 })
+
+//change password
 export const changePassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
 

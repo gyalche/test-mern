@@ -22,5 +22,20 @@ export const authentication = catchAsyncError(async (req: any, res: Response, ne
     } catch (error: any) {
         next(new ErrorHandler(404, error.message))
     }
-
 })
+
+//authorize  role;
+export const authorization = (roles: string) => {
+    return (req: any, res: Response, next: NextFunction) => {
+        if (roles === 'user') {
+            return next(
+                new ErrorHandler(
+                    404,
+                    `Accessed denied to ${req.user?.role} `,
+
+                )
+            );
+        }
+        next();
+    };
+};
