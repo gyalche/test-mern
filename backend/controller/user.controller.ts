@@ -6,6 +6,7 @@ import { ActivateUser, registerBody, userType } from "../@types/user";
 import { createActivationToken } from "../utils/activationToken";
 import { sendMail } from "../utils/sendMail";
 import jwt from 'jsonwebtoken'
+import { jwtToken } from "../utils/jwt";
 
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -69,4 +70,39 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         next(new ErrorHandler(400, error.message))
     }
 })
+//login;
 
+export const userLogin = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return next(new ErrorHandler(404, 'Invalid credentials'))
+        }
+        const user = await userModel.findOne({ email }).select("+password") as userType;
+        if (!user) {
+            return next(new ErrorHandler(404, 'user not found'))
+        }
+        console.log("email", user)
+        const passwordMatch = await user.comparePassword(password);
+        console.log("check compare", passwordMatch)
+        if (!passwordMatch) {
+            return next(new ErrorHandler(404, 'incorrect password'))
+        }
+        process.nextTick(async () => {
+            await jwtToken(user, 200, res)
+        })
+
+    } catch (error: any) {
+        return next(new ErrorHandler(400, error.message))
+    }
+})
+//user info;
+export const getUserInfo = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user?._id;
+        const user = userModel.findById({ userId });
+    } catch (error) {
+
+    }
+})

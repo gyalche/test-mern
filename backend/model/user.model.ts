@@ -1,11 +1,11 @@
 import express from 'express';
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose, { Model, Schema, model } from 'mongoose';
 import { emailRegexExpression } from '../utils/regex';
 import { UserRole, userType } from '../@types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 
-const userSchema: Schema<userType> = new mongoose.Schema({
+const userSchema = new Schema<userType>({
     name: {
         type: String,
         required: [true, 'Enter your name']
@@ -33,11 +33,11 @@ const userSchema: Schema<userType> = new mongoose.Schema({
         public_id: String,
         url: String,
     },
-    // role: {
-    //     type: String,
-    //     enum: Object.values(UserRole),
-    //     default: UserRole.USER,
-    // },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
+    },
 
 }, { timestamps: true })
 
@@ -62,6 +62,6 @@ userSchema.methods.signInAccessToken = function () {
 userSchema.methods.signInRefreshToken = function () {
     return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET_KEY || '', { expiresIn: '6d' })
 }
-const userModel: Model<userType> = mongoose.model<userType>('users', userSchema);
+const userModel = model<userType>('user', userSchema);
 
 export default userModel;

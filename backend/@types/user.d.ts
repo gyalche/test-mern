@@ -12,7 +12,7 @@ export interface userType extends Document {
         public_id: string;
         url: string;
     },
-    role?: UserRole,
+    role?: 'user' | 'admin',
     comparePassword: (password: string) => Promise<boolean>;
     signAccessToken: () => string;
     signRefreshToken: () => string;
