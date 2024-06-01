@@ -187,6 +187,7 @@ export const forgotPassword = catchAsyncError(async (req: any, res: Response, ne
         }
         const { activation_code, token } = createActivationToken(user);
         const data = { user: { name: user.name }, activation_code };
+        console.log(data)
         process.nextTick(async () => {
             sendMail({
                 email: user.email,
@@ -235,12 +236,26 @@ export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Respon
 })
 export const changePassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
+
         const { oldPassword, password, reTypePassword } = req.body;
-        if(!oldPassword) return next(new ErrorHandler())
-        if (password !== reTypePassword){
-
+        if (!oldPassword) return next(new ErrorHandler(400, 'please enter old password'))
+        if (oldPassword && password !== reTypePassword) {
+            return next(new ErrorHandler(400, 'Password doestnot match'))
         }
-    } catch (error: any) {
+        const id = req.user._id;
+        const user = await userModel.findById(id).select("+password");
+        if (!user) return next(new ErrorHandler(400, 'User doesnt exist'));
 
+        const oldPasswordMatch = await bcrypt.compare(oldPassword, user?.password);
+        if (!oldPasswordMatch) return next(new ErrorHandler(400, 'old password doest not match'));
+        const hashPassword = await bcrypt.hash(password, 10);
+        await userModel.findByIdAndUpdate(id, { password: hashPassword });
+        res.status(201).json({
+            success: true,
+            message: 'password update sucessfully',
+
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(400, error.message))
     }
 })
