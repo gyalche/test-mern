@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { catchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/errorHandler";
 import userModel from "../model/user.model";
-import { registerBody } from "../@types/user";
+import { ActivateUser, registerBody, userType } from "../@types/user";
 import { createActivationToken } from "../utils/activationToken";
 import { sendMail } from "../utils/sendMail";
+import jwt from 'jsonwebtoken'
 
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -42,3 +43,30 @@ export const userRegister = catchAsyncError(
             return next(new ErrorHandler(400, error.message))
         }
     });
+
+export const activateUser = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { token, activation_code } = req.body as ActivateUser;
+        const myUser: { user: userType, activation_code: any } = jwt.verify(
+            token,
+            process.env.ACTIVATION_SECRET as string
+        ) as any;
+
+        console.log("users", myUser)
+
+        if (myUser.activation_code !== activation_code) {
+            return next(new ErrorHandler(400, 'Invalid activation code'))
+        }
+        const { name, email, password } = myUser.user;
+        const emailExist = await userModel.findOne({ email });
+        if (emailExist) {
+            return next(new ErrorHandler(400, 'Email already exists'))
+        }
+        const user = await userModel.create({ name, email, password })
+        user.save();
+        res.status(201).json({ success: true, data: user })
+    } catch (error: any) {
+        next(new ErrorHandler(400, error.message))
+    }
+})
+

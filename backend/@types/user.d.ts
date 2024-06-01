@@ -35,3 +35,8 @@ interface emailOption {
     template: string,
     data: any
 }
+
+interface ActivateUser {
+    token: string;
+    activation_code: string
+}
