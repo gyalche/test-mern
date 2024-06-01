@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken'
 import { jwtToken } from "../utils/jwt";
 import { v2 as cloudinary } from 'cloudinary';
 
-
+//register account
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -47,6 +47,7 @@ export const userRegister = catchAsyncError(
         }
     });
 
+//activate account with opt
 export const activateUser = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { token, activation_code } = req.body as ActivateUser;
@@ -73,8 +74,8 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         next(new ErrorHandler(400, error.message))
     }
 })
-//login;
 
+//login;
 export const userLogin = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
@@ -100,7 +101,8 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
         return next(new ErrorHandler(400, error.message))
     }
 })
-//user info;
+
+//get user info;
 export const getUserInfo = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user?._id;
@@ -116,6 +118,7 @@ export const getUserInfo = catchAsyncError(async (req: any, res: Response, next:
     }
 })
 
+//upload photo
 export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { profile } = req.body;
@@ -154,5 +157,20 @@ export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next
         })
     } catch (error: any) {
         next(new ErrorHandler(404, error.message))
+    }
+})
+
+//update user account;
+export const updateUser = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const id = req.user?._id;
+        const user = await userModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+        res.status(201).json({
+            success: true,
+            data: user
+        })
+
+    } catch (error: any) {
+        next(new ErrorHandler(400, error.message))
     }
 })
