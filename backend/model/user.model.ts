@@ -1,9 +1,10 @@
 import express from 'express';
 import mongoose, { Model, Schema } from 'mongoose';
 import { emailRegexExpression } from '../utils/regex';
-import { userType } from '../@types/user';
+import { UserRole, userType } from '../@types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+
 const userSchema: Schema<userType> = new mongoose.Schema({
     name: {
         type: String,
@@ -12,29 +13,37 @@ const userSchema: Schema<userType> = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'please enter email'],
+        unique: true,
         validate: {
-            validator: (value: string) => {
+            validator: (value: string): boolean => {
                 return emailRegexExpression.test(value)
-            }
+            },
+            message: 'Please enter a valid email'
         },
-        unique: true
+
     },
     password: {
         type: String,
         required: [true, 'please enter password'],
-        // minLength: [4, 'password must be atleast 4 charcter'],
-        // maxlength: [15, 'Password cannot acced 15 character']
-
+        minlength: [4, 'password must be at least 4 characters'],
+        max: [15, 'Password cannot be more than 15 characters'],
+        select: false
     },
     profile: {
         public_id: String,
         url: String,
-    }
-})
+    },
+    // role: {
+    //     type: String,
+    //     enum: Object.values(UserRole),
+    //     default: UserRole.USER,
+    // },
+
+}, { timestamps: true })
 
 userSchema.pre<userType>('save', async function (next) {
     if (!this.isModified('password')) {
-        next()
+        return next()
     }
     this.password = await bcrypt?.hash(this.password, 10);
     next()
@@ -53,6 +62,6 @@ userSchema.methods.signInAccessToken = function () {
 userSchema.methods.signInRefreshToken = function () {
     return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET_KEY || '', { expiresIn: '6d' })
 }
-const userModel: Model<userType> = mongoose.model('users', userSchema);
+const userModel: Model<userType> = mongoose.model<userType>('users', userSchema);
 
 export default userModel;

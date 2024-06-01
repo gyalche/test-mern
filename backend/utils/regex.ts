@@ -1,1 +1,1 @@
-export const emailRegexExpression: RegExp = /A[A-Z0-9+_.-]+@[A-Z0-9.-]+Z/;
+export const emailRegexExpression: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

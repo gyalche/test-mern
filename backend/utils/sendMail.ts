@@ -1,36 +1,39 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { Transporter } from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
+import ErrorHandler from './errorHandler';
+import dotenv from 'dotenv';
+import { emailOption } from '../@types/user';
 
-export const sendMail = async (options: any) => {
+dotenv.config();
 
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'smtp',
-            auth: {
-                user: 'fupulamu01@gmail.com',
-                pass: 'dawadawa0101',
-            }
-        })
+export const sendMail = async (options: emailOption) => {
 
-        const { email, subject, template, data } = options;
+    const transporter: Transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        service: process.env.SMTP_SERVICE,
+        auth: {
+            user: process.env.SMTP_EMAIL,
+            pass: process.env.SMTP_PASSWORD
+        }
+    })
+    const { email, subject, template, data } = options;
 
-        const emailTemplate = path.join(__dirname, '../view', template);
-        const htmlFile = ejs.renderFile(emailTemplate, data);
-        console.log("🚀 ~ sendMail ~ htmlFile:", htmlFile)
+    const emailTemplate = path.join(__dirname, '../view', template);
 
-        let mailOption = {
-            from: 'fupulamu01@gmail.com',
-            to: email,
-            subject,
-            html: htmlFile
-        } as any
+    const html = await ejs.renderFile(emailTemplate, data);
+    console.log("html", html)
+    let mailOption = {
+        from: process.env.SMTP_EMAIL,
+        to: email,
+        subject,
+        html
+    } as any
 
-        await transporter.sendMail(mailOption)
-    }
+    await transporter.sendMail(mailOption)
 
-    catch (err) {
-
-    }
 
 }
+
+

@@ -1,6 +1,9 @@
 import { Document } from "mongoose";
 
-
+enum UserRole {
+    USER = 'user',
+    ADMIN = "admin"
+}
 export interface userType extends Document {
     name: string,
     email: string,
@@ -9,9 +12,10 @@ export interface userType extends Document {
         public_id: string;
         url: string;
     },
+    role?: UserRole,
     comparePassword: (password: string) => Promise<boolean>;
-    SignAccessToken: () => string;
-    SignRefreshToken: () => string;
+    signAccessToken: () => string;
+    signRefreshToken: () => string;
 }
 
 export interface registerBody {
@@ -22,4 +26,12 @@ export interface registerBody {
         public_id?: string,
         url?: string
     }
+
+}
+
+interface emailOption {
+    email: string,
+    subject: string,
+    template: string,
+    data: any
 }

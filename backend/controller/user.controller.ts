@@ -8,29 +8,26 @@ import { sendMail } from "../utils/sendMail";
 
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
-
         try {
             const { name, email, password, profile } = req.body as registerBody
             const emailExist = await userModel.findOne({ email })
             if (emailExist) {
                 return next(new ErrorHandler(400, 'Email already exists'))
             }
-
             const user: registerBody = {
                 name, email, password, profile
             }
+
+            console.log("user", user)
             const { activation_code, token } = createActivationToken(user);
             const data = { user: { name: user.name }, activation_code };
-
-
             try {
                 process.nextTick(async () => {
                     await sendMail({
                         email: user.email,
-                        subject: 'Active your email',
+                        subject: 'Email Activation',
                         template: 'mail-activation.ejs',
                         data: data,
-
                     })
                 })
                 return res.status(201).json({
@@ -40,11 +37,8 @@ export const userRegister = catchAsyncError(
                 })
             } catch (error: any) {
                 new ErrorHandler(400, error.message)
-
             }
         } catch (error: any) {
-            new ErrorHandler(400, error.message)
-
-
+            return next(new ErrorHandler(400, error.message))
         }
-    })
+    });
