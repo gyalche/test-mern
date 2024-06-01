@@ -65,6 +65,7 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         }
         const user = await userModel.create({ name, email, password })
         user.save();
+        const activationToken = user?.signAccessToken
         res.status(201).json({ success: true, data: user })
     } catch (error: any) {
         next(new ErrorHandler(400, error.message))
@@ -89,8 +90,8 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
         if (!passwordMatch) {
             return next(new ErrorHandler(404, 'incorrect password'))
         }
-        process.nextTick(async () => {
-            await jwtToken(user, 200, res)
+        process.nextTick(() => {
+            jwtToken(user, 200, res)
         })
 
     } catch (error: any) {
@@ -100,9 +101,15 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
 //user info;
 export const getUserInfo = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const userId = req.user?._id;
-        const user = userModel.findById({ userId });
-    } catch (error) {
-
+        const id = req.user?._id;
+        console.log("userid", id)
+        const user = await userModel.findById(id);
+        // console.log("user", user)
+        res.status(200).json({
+            success: true,
+            user,
+        });
+    } catch (error: any) {
+        return next(new ErrorHandler(404, error.message))
     }
 })

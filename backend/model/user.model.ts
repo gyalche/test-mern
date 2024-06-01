@@ -50,13 +50,13 @@ userSchema.pre<userType>('save', async function (next) {
 })
 
 userSchema.methods.comparePassword = async function (
-    enteredpassword: string
+    userPassword: string
 ): Promise<boolean> {
-    return bcrypt.compare(enteredpassword, this.password);
+    return bcrypt.compare(userPassword, this.password);
 };
 
 userSchema.methods.signInAccessToken = function () {
-    return jwt.sign({ id: this.password }, process.env.ACCESS_TOKEN_SECRET_KEY || '', { expiresIn: '10min' })
+    return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN_SECRET_KEY || '', { expiresIn: '10min' })
 }
 
 userSchema.methods.signInRefreshToken = function () {

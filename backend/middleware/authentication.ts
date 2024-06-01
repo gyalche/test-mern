@@ -9,11 +9,11 @@ export const authentication = catchAsyncError(async (req: any, res: Response, ne
         if (!token) {
             return next(new ErrorHandler(404, 'user is not authenticated'));
         }
-        const verify = jwt.verify(token, process.env.ACCESS_TOKEN as string) as JwtPayload;
+        const verify = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY as string) as JwtPayload;
         if (!verify) {
             return next(new ErrorHandler(404, 'invalid access token'))
         }
-        const user = await userModel.findById({ _id: verify._id });
+        const user = await userModel.findById({ _id: verify.id });
         if (!user) {
             return next(new ErrorHandler(404, 'User not found'))
         }
