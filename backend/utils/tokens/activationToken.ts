@@ -1,4 +1,6 @@
-import jwt, { Secret } from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken';
+
+
 interface ActivationToken {
     activation_code: string,
     token: string

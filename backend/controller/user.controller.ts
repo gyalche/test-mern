@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsyncError } from "../middleware/catchAsyncError";
-import ErrorHandler from "../utils/errorHandler";
+import ErrorHandler from "../utils/error/errorHandler";
 import userModel from "../model/user.model";
 import { ActivateUser, registerBody, userType } from "../@types/user";
-import { createActivationToken } from "../utils/activationToken";
-import { sendMail } from "../utils/sendMail";
+import { createActivationToken } from "../utils/tokens/activationToken";
+import { sendMail } from "../utils/mail/sendMail";
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
-import { jwtToken } from "../utils/jwt";
+import { jwtToken } from "../utils/tokens/jwt";
 import { v2 as cloudinary } from 'cloudinary';
 import bcrypt from 'bcrypt';
 
@@ -14,7 +14,11 @@ import bcrypt from 'bcrypt';
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { name, email, password, profile } = req.body as registerBody
+            const { name, email, password, profile } = req.body as registerBody;
+
+            if (name.length < 4) { return next(new ErrorHandler(400, 'name cannot be less than 4 character')) }
+            if (name.length > 16) { return next(new ErrorHandler(400, 'name cannot be more than 16 character')) }
+
             const emailExist = await userModel.findOne({ email })
             if (emailExist) {
                 return next(new ErrorHandler(400, 'Email already exists'))
@@ -45,6 +49,7 @@ export const userRegister = catchAsyncError(
             }
         } catch (error: any) {
             return next(new ErrorHandler(400, error.message))
+
         }
     });
 

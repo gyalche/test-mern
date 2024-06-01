@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { catchAsyncError } from "../middleware/catchAsyncError";
-import ErrorHandler from "./errorHandler";
+import { catchAsyncError } from "../../middleware/catchAsyncError";
+import ErrorHandler from "../error/errorHandler";
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import userModel from "../model/user.model";
+import userModel from "../../model/user.model";
 export const refreshToken = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { refresh_token } = req.body;

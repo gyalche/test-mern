@@ -3,7 +3,7 @@ import { errorMiddleware } from './middleware/error';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import userRoute from './routes/user.routes'
-import { DBConnection } from './utils/database';
+import { DBConnection } from './utils/db/database';
 import morgan from 'morgan';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';

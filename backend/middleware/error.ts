@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import ErrorHandler from "../utils/errorHandler";
+import ErrorHandler from "../utils/error/errorHandler";
 
 export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
 
@@ -11,6 +11,15 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
     if (err.name === 'CastError') {
         const message = `Resource not found`;
         err = new ErrorHandler(400, message);
+    }
+
+    //validation error;
+    if (err.name === 'ValidationError') {
+        const messages = Object.values(err).map((val: any) => val.message);
+        return res.status(400).json({
+            success: false,
+            err: messages
+        });
     }
 
     //duplicate key error;

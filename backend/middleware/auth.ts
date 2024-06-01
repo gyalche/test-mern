@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import { catchAsyncError } from "./catchAsyncError";
-import ErrorHandler from "../utils/errorHandler";
+import ErrorHandler from "../utils/error/errorHandler";
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import userModel from "../model/user.model";
 export const authentication = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {

@@ -1,7 +1,7 @@
 import express from 'express';
 import { activateUser, changePassword, forgotPassword, forgotPasswordUpdate, getUserInfo, updateUser, uploadPhotos, userLogin, userRegister } from '../controller/user.controller';
-import { authentication } from '../middleware/authentication';
-import { refreshToken } from '../utils/refreshToken';
+import { authentication } from '../middleware/auth';
+import { refreshToken } from '../utils/tokens/refreshToken';
 
 const userRoute = express.Router();
 

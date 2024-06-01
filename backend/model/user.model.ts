@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose, { Model, Schema, model } from 'mongoose';
-import { emailRegexExpression } from '../utils/regex';
+import { emailRegexExpression } from '../utils/regex/regex';
 import { UserRole, userType } from '../@types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
@@ -8,7 +8,9 @@ import jwt from 'jsonwebtoken'
 const userSchema = new Schema<userType>({
     name: {
         type: String,
-        required: [true, 'Enter your name']
+        minlength: [4, 'Name must be at least 4 characters'],
+        maxlength: [16, 'Name cannot be more than 16 characters'],
+        required: [true, 'Enter your name'],
     },
     email: {
         type: String,
@@ -26,7 +28,7 @@ const userSchema = new Schema<userType>({
         type: String,
         required: [true, 'please enter password'],
         minlength: [4, 'password must be at least 4 characters'],
-        max: [15, 'Password cannot be more than 15 characters'],
+        maxlength: [15, 'Password cannot be more than 15 characters'],
         select: false
     },
     profile: {
