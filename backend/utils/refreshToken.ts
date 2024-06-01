@@ -5,7 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import userModel from "../model/user.model";
 export const refreshToken = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const { refresh_token } = req.body as any;
+        const { refresh_token } = req.body;
         const verify = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET_KEY as string) as JwtPayload;
         console.log('verify', verify)
         if (!verify) {
@@ -29,3 +29,4 @@ export const refreshToken = catchAsyncError(async (req: any, res: Response, next
         return next(new ErrorHandler(404, error.message))
     }
 })
+

@@ -7,6 +7,8 @@ import { createActivationToken } from "../utils/activationToken";
 import { sendMail } from "../utils/sendMail";
 import jwt from 'jsonwebtoken'
 import { jwtToken } from "../utils/jwt";
+import { v2 as cloudinary } from 'cloudinary';
+
 
 export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -111,5 +113,46 @@ export const getUserInfo = catchAsyncError(async (req: any, res: Response, next:
         });
     } catch (error: any) {
         return next(new ErrorHandler(404, error.message))
+    }
+})
+
+export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const { profile } = req.body;
+        console.log(profile)
+        const id = req.user?._id;
+        const user = await userModel.findById(id) as any;
+
+        if (!profile) {
+            return next(new ErrorHandler(400, 'please select profile'))
+        }
+        if (user?.profile?.public_id) {
+            await cloudinary.uploader.destroy(user?.profile?.public_id);
+            const image = await cloudinary.uploader.upload(profile, {
+                folder: 'profile',
+                width: 200
+            })
+            user.profile = {
+                public_id: image.public_id,
+                url: image.secure_url
+            }
+        } else {
+            const image = await cloudinary.uploader.upload(profile, {
+                folder: 'profile',
+                width: 200
+            })
+            user.profile = {
+                public_id: image.public_id,
+                url: image.secure_url
+            }
+        }
+
+        await user.save();
+        res.status(201).json({
+            success: true,
+            data: user
+        })
+    } catch (error: any) {
+        next(new ErrorHandler(404, error.message))
     }
 })

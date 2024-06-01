@@ -1,5 +1,5 @@
 import express from 'express';
-import { activateUser, getUserInfo, userLogin, userRegister } from '../controller/user.controller';
+import { activateUser, getUserInfo, uploadPhotos, userLogin, userRegister } from '../controller/user.controller';
 import { authentication } from '../middleware/authentication';
 import { refreshToken } from '../utils/refreshToken';
 
@@ -13,5 +13,8 @@ userRoute.post('/login', userLogin)
 //get request
 userRoute.get('/refresh', refreshToken)
 userRoute.get('/user-info', authentication, getUserInfo)
+
+//put && patch;
+userRoute.patch('/upload-photo', authentication, uploadPhotos)
 
 export default userRoute;
