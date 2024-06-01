@@ -5,9 +5,10 @@ import userModel from "../model/user.model";
 import { ActivateUser, registerBody, userType } from "../@types/user";
 import { createActivationToken } from "../utils/activationToken";
 import { sendMail } from "../utils/sendMail";
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { jwtToken } from "../utils/jwt";
 import { v2 as cloudinary } from 'cloudinary';
+import bcrypt from 'bcrypt';
 
 //register account
 export const userRegister = catchAsyncError(
@@ -68,7 +69,6 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         }
         const user = await userModel.create({ name, email, password })
         user.save();
-        const activationToken = user?.signAccessToken
         res.status(201).json({ success: true, data: user })
     } catch (error: any) {
         next(new ErrorHandler(400, error.message))
@@ -153,6 +153,7 @@ export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next
         await user.save();
         res.status(201).json({
             success: true,
+            message: 'profile updated sucessfully',
             data: user
         })
     } catch (error: any) {
@@ -167,10 +168,79 @@ export const updateUser = catchAsyncError(async (req: any, res: Response, next: 
         const user = await userModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
         res.status(201).json({
             success: true,
+            message: 'Successfully updated',
             data: user
         })
 
     } catch (error: any) {
         next(new ErrorHandler(400, error.message))
+    }
+})
+
+//forgot password token
+export const forgotPassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const id = req.user?._id;
+        const user: any = await userModel.findById(id).select("+password");
+        if (!user) {
+            return next(new ErrorHandler(404, 'user doesnt exist'));
+        }
+        const { activation_code, token } = createActivationToken(user);
+        const data = { user: { name: user.name }, activation_code };
+        process.nextTick(async () => {
+            sendMail({
+                email: user.email,
+                subject: 'Password reset',
+                template: 'mail-activation.ejs',
+                data: data,
+            })
+        })
+        res.status(200).json({
+            success: true,
+            message: `Please check your email:${user.name}`,
+            token
+        })
+    } catch (error: any) {
+        next(new ErrorHandler(400, error.message))
+    }
+})
+
+// update password code;
+export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const { password, activation_code, token } = req.body;
+        const id = req.user?._id;
+
+        if (!password) return next(new ErrorHandler(400, 'Password enter password'))
+
+        const myUser: { user: userType, activation_code: any } = jwt.verify(
+            token,
+            process.env.ACTIVATION_SECRET as string
+        ) as any;
+
+        if (myUser.activation_code !== activation_code) {
+            return next(new ErrorHandler(400, 'Invalid activation code'))
+        }
+        const hashedPassword = await bcrypt.hash(password, 10)
+        await userModel.findByIdAndUpdate(id, { password: hashedPassword })
+        const user = await userModel.findById(id)
+        res.status(200).json({
+            success: true,
+            message: 'successfully password updated',
+            data: user
+        })
+    } catch (error: any) {
+        next(new ErrorHandler(400, error.message))
+    }
+})
+export const changePassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const { oldPassword, password, reTypePassword } = req.body;
+        if(!oldPassword) return next(new ErrorHandler())
+        if (password !== reTypePassword){
+
+        }
+    } catch (error: any) {
+
     }
 })
