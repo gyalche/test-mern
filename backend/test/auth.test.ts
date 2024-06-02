@@ -1,5 +1,5 @@
+/// <reference types="jest" />
 import { NextFunction, Request, Response } from 'express';
-;
 import jwt from 'jsonwebtoken';
 import userModel from '../model/user.model';
 import ErrorHandler from '../utils/error/errorHandler';
@@ -18,12 +18,15 @@ jest.mock("../utils/tokens/jwt");
 jest.mock('jsonwebtoken');
 
 describe('authentication middleware', () => {
-    let req: Partial<Request>;
+    let req: Partial<any>;
     let res: Partial<Response>;
     let next: NextFunction;
 
     beforeEach(() => {
         req = {
+            user: {
+                role: 'user'
+            },
             headers: {
                 authorization: 'Bearer valid-token'
             }
@@ -47,9 +50,7 @@ describe('authentication middleware', () => {
 
     it('should return an error if token is missing', async () => {
         req.headers = {}
-
         await authentication(req as Request, res as Response, next);
-
         expect(next).toHaveBeenCalledWith(new ErrorHandler(404, 'user is not authenticated'));
     });
 

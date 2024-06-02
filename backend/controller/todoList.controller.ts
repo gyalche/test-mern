@@ -29,7 +29,7 @@ export const createTodoList = catchAsyncError(async (req: any, res: Response, ne
     }
 })
 
-export const getTodoList = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+export const getTodoList = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user?._id;
         const user = await todoModel.find({ createdBy: id });
@@ -75,7 +75,7 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
 })
 
 //delete task;
-export const deleteTask = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+export const deleteTask = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         const userId = req.user?._id

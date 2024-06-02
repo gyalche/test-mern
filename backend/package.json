@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/server.ts",
     "dev": "nodemon src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "cypress":"cypress open"
   },
   "keywords": [],
   "author": "",
