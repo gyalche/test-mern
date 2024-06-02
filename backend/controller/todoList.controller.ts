@@ -28,3 +28,20 @@ export const createTodoList = catchAsyncError(async (req: any, res: Response, ne
         return next(new ErrorHandler(400, error.message))
     }
 })
+
+export const getTodoList = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.user?._id;
+        const user = await todoModel.find({ createdBy: id });
+        if (!user) {
+            return next(new ErrorHandler(400, 'No todo list found'))
+        }
+        res.status(200).json({
+            success: true,
+            message: 'successfully fetch todo list',
+            data: user,
+        })
+    } catch (error: any) {
+        new ErrorHandler(400, error.message)
+    }
+})

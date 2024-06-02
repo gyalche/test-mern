@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import todoModel from '../model/todoList.model';
-import { createTodoList } from '../controller/todoList.controller';
+import { createTodoList, getTodoList } from '../controller/todoList.controller';
 import ErrorHandler from '../utils/error/errorHandler';
 
 
@@ -50,26 +50,7 @@ describe('createTodoList', () => {
             title: { $regex: new RegExp('^Test Task$', 'i') },
             createdBy: 'userId123'
         });
-        // expect(todoModel.create).toHaveBeenCalledWith({
-        //     title: 'Test',
-        //     description: 'Test Description',
-        //     dueDate: '2024-12-31',
-        //     priority: 'High',
-        //     createdBy: 'userId123',
-        // });
-        // expect(res.status).toHaveBeenCalledWith(201);
-        // expect(res.json).toHaveBeenCalledWith({
-        //     success: true,
-        //     message: 'successfully created',
-        //     data: expect.objectContaining({
-        //         _id: 'taskId123',
-        //         title: 'Test Task',
-        //         description: 'Test Description',
-        //         dueDate: '2024-12-31',
-        //         priority: 'High',
-        //         createdBy: 'userId123'
-        //     })
-        // });
+
     });
 
     it('should return 400 if title already exists for the user', async () => {
@@ -85,8 +66,25 @@ describe('createTodoList', () => {
             title: { $regex: new RegExp('^Test Task$', 'i') },
             createdBy: 'userId123'
         });
+
         expect(next).toHaveBeenCalledWith(new ErrorHandler(400, 'Task with this title already exists'));
         expect(res.json).not.toHaveBeenCalled();
     });
 
+    it('should return all todo lists of the given user ID', async () => {
+        // Mock the result of todoModel.find()
+        const expectedTodoLists = [
+            { title: 'Task 1', description: 'Description 1', createdBy: 'userId123' },
+            { title: 'Task 2', description: 'Description 2', createdBy: 'userId123' },
+        ];
+        (todoModel.find as jest.Mock).mockResolvedValue(expectedTodoLists);
+
+        // Call the function to be tested
+        await getTodoList(req as Request, res as Response, next);
+
+        // Expectations
+        expect(todoModel.find).toHaveBeenCalledWith({ createdBy: 'userId123' });
+
+        expect(next).not.toHaveBeenCalled(); // Ensure next is not called
+    });
 });
