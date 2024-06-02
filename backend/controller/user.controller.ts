@@ -100,7 +100,7 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
             return next(new ErrorHandler(404, 'incorrect password'))
         }
         process.nextTick(() => {
-            jwtToken(user, 200, res)
+            jwtToken(user, 201, res)
         })
 
     } catch (error: any) {

@@ -45,3 +45,22 @@ export const getTodoList = catchAsyncError(async (req: Request, res: Response, n
         new ErrorHandler(400, error.message)
     }
 })
+
+//update to do list;
+export const updateTodoList = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return next(new ErrorHandler(404, 'No id found'))
+        }
+        const todo = await todoModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+        res.status(201).json({
+            success: true,
+            message: 'successfully updated',
+            data: todo
+        })
+
+    } catch (error: any) {
+        next(new ErrorHandler(400, error.message))
+    }
+})

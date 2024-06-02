@@ -72,6 +72,7 @@ describe('createTodoList', () => {
     });
 
     it('should return all todo lists of the given user ID', async () => {
+
         // Mock the result of todoModel.find()
         const expectedTodoLists = [
             { title: 'Task 1', description: 'Description 1', createdBy: 'userId123' },
@@ -82,9 +83,8 @@ describe('createTodoList', () => {
         // Call the function to be tested
         await getTodoList(req as Request, res as Response, next);
 
-        // Expectations
         expect(todoModel.find).toHaveBeenCalledWith({ createdBy: 'userId123' });
 
-        expect(next).not.toHaveBeenCalled(); // Ensure next is not called
+        expect(next).not.toHaveBeenCalled();
     });
 });
