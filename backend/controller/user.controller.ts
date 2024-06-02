@@ -15,19 +15,17 @@ export const userRegister = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name, email, password, profile } = req.body as registerBody;
-
-            if (name.length < 4) { return next(new ErrorHandler(400, 'name cannot be less than 4 character')) }
-            if (name.length > 16) { return next(new ErrorHandler(400, 'name cannot be more than 16 character')) }
+            // if (name.length < 4) { return next(new ErrorHandler(400, 'name cannot be less than 4 character')) }
+            // if (name.length > 16) { return next(new ErrorHandler(400, 'name cannot be more than 16 character')) }
 
             const emailExist = await userModel.findOne({ email })
             if (emailExist) {
                 return next(new ErrorHandler(400, 'Email already exists'))
             }
+
             const user: registerBody = {
                 name, email, password, profile
             }
-
-            console.log("user", user)
             const { activation_code, token } = createActivationToken(user);
             const data = { user: { name: user.name }, activation_code };
             try {
@@ -48,7 +46,8 @@ export const userRegister = catchAsyncError(
                 new ErrorHandler(400, error.message)
             }
         } catch (error: any) {
-            return next(new ErrorHandler(400, error.message))
+            // return next(new ErrorHandler(400, error.message))
+            throw new Error(error.message)
 
         }
     });

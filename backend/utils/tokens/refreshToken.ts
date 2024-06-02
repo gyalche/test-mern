@@ -16,7 +16,7 @@ export const refreshToken = catchAsyncError(async (req: any, res: Response, next
         console.log('user', user)
         if (!user) return next(new ErrorHandler(404, 'user does not exist'));
         const access_token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET_KEY as string, {
-            expiresIn: '5m'
+            expiresIn: '10min'
         });
         console.log('access_token')
         req.user = user;

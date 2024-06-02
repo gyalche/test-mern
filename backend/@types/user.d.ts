@@ -4,6 +4,17 @@ enum UserRole {
     USER = 'user',
     ADMIN = "admin"
 }
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: {
+                _id?: string;
+                role?: string;
+            };
+        }
+    }
+}
 export interface userType extends Document {
     name: string,
     email: string,
