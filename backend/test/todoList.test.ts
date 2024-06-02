@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import todoModel from '../model/todoList.model';
-import { createTodoList, getTodoList } from '../controller/todoList.controller';
+import { createTodoList, deleteTask, getTodoList, updateTodoList } from '../controller/todoList.controller';
 import ErrorHandler from '../utils/error/errorHandler';
 
 
@@ -8,7 +8,7 @@ jest.mock('../model/todoList.model')
 jest.mock("../utils/tokens/jwt");
 
 
-describe('createTodoList', () => {
+describe('To do lists', () => {
     let req: any;
     let res: any;
     let next: NextFunction;
@@ -16,6 +16,7 @@ describe('createTodoList', () => {
     beforeEach(() => {
         req = {
             user: { _id: 'userId123' },
+            params: { id: 'dawasherpa123' },
             body: {
                 title: 'Test Task',
                 description: 'Test Description',
@@ -87,4 +88,68 @@ describe('createTodoList', () => {
 
         expect(next).not.toHaveBeenCalled();
     });
-});
+
+    it('should update the use successfully', async () => {
+        const taskId = 'taskId123';
+        const userId = 'userId123';
+        const updatedTaskData = {
+            title: 'Updated Task Title',
+            description: 'Updated Task Description',
+        };
+        const req = { params: { id: taskId }, user: { _id: userId }, body: updatedTaskData };
+        (todoModel.findById as jest.Mock).mockResolvedValueOnce({
+            _id: taskId,
+            createdBy: userId,
+        });
+
+        (todoModel.findByIdAndUpdate as jest.Mock).mockResolvedValueOnce({
+            _id: taskId,
+            createdBy: userId,
+            ...updatedTaskData,
+        });
+
+        const res: Partial<Response> = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        const next = jest.fn();
+
+        await updateTodoList(req as any, res as any, next);
+        expect(todoModel.findById).toHaveBeenCalledWith(taskId);
+        expect(todoModel.findByIdAndUpdate).toHaveBeenCalledWith(taskId, { $set: updatedTaskData }, { new: true });
+        expect(next).not.toHaveBeenCalled();
+    })
+
+    //delte task;
+    it('should delete task successfully', async () => {
+        const taskId = 'taskId123';
+        const userId = 'userId123';
+
+        const req = { params: { id: taskId }, user: { _id: userId } };
+        (todoModel.findById as jest.Mock).mockResolvedValueOnce({
+            _id: taskId,
+            createdBy: userId,
+        });
+
+        (todoModel.findByIdAndDelete as jest.Mock).mockResolvedValueOnce({
+            _id: taskId,
+            createdBy: userId,
+        });
+
+        const res: Partial<Response> = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+
+        const next = jest.fn();
+
+        await deleteTask(req as any, res as any, next);
+
+        expect(todoModel.findById).toHaveBeenCalledWith(taskId);
+        expect(todoModel.findByIdAndDelete).toHaveBeenCalledWith(taskId);
+
+        expect(next).not.toHaveBeenCalled();
+    });
+
+})
+
