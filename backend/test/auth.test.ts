@@ -73,9 +73,6 @@ describe('authorization middleware', () => {
 
     beforeEach(() => {
         req = {
-            // user: {
-            //     role: 'user'
-            // }
         };
         res = {};
         next = jest.fn();
@@ -91,7 +88,6 @@ describe('authorization middleware', () => {
     it('should allow access if role is admin', () => {
         const authorizeAdmin = authorization('admin');
         authorizeAdmin(req as Request, res as Response, next);
-
         expect(next).toHaveBeenCalled();
         expect(next).not.toHaveBeenCalledWith(expect.any(ErrorHandler));
     });

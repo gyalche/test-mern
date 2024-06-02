@@ -5,16 +5,19 @@ import { TodoTypes } from '../@types/todo';
 const todoSchema = new Schema<TodoTypes>({
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
     description: {
         type: String,
-        default: ''
+        default: '',
+        trim: true,
 
     },
     dueDate: {
         type: Date,
         required: true,
+        default: Date.now()
     },
     priority: {
         type: String,

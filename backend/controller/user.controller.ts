@@ -37,18 +37,20 @@ export const userRegister = catchAsyncError(
                         data: data,
                     })
                 })
-                return res.status(201).json({
+                res.status(201).json({
                     success: true,
                     message: `Please check your email:${user.name}`,
                     activationToken: token
                 })
             } catch (error: any) {
-                new ErrorHandler(400, error.message)
+                // Handle the case where email is not found
+                if (error.message.includes('Address not found')) {
+                    return next(new ErrorHandler(404, 'Email address not found'))
+                }
+
             }
         } catch (error: any) {
-            // return next(new ErrorHandler(400, error.message))
-            throw new Error(error.message)
-
+            return next(new ErrorHandler(400, error.message))
         }
     });
 
@@ -161,6 +163,7 @@ export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next
             data: user
         })
     } catch (error: any) {
+        console.log(error.message)
         next(new ErrorHandler(404, error.message))
     }
 })

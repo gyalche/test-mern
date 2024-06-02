@@ -2,11 +2,14 @@ import express, { NextFunction, Request, Response } from 'express';
 import { errorMiddleware } from './middleware/error';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import userRoute from './routes/user.routes'
 import { DBConnection } from './utils/db/database';
 import morgan from 'morgan';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+
+//routes import
+import userRoute from './routes/user.routes'
+import todoRoutes from './routes/todo.routes';
 
 dotenv.config();
 
@@ -27,7 +30,7 @@ app.use(morgan('dev'))
 app.use(cors({ origin: process.env.ORIGIN }));
 
 //routes;
-app.use('/auth', userRoute)
+app.use('/auth', userRoute, todoRoutes)
 
 //unknown routes;
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

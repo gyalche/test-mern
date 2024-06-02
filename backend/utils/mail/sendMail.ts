@@ -22,6 +22,7 @@ export const sendMail = async (options: emailOption) => {
         const emailTemplate = path.join(__dirname, '../../view', template);
 
         const html = await ejs.renderFile(emailTemplate, data);
+
         console.log("html", html)
         let mailOption = {
             from: process.env.SMTP_EMAIL,
@@ -30,7 +31,8 @@ export const sendMail = async (options: emailOption) => {
             html
         } as any
 
-        await transporter.sendMail(mailOption)
+        await transporter.sendMail(mailOption);
+
     } catch (error: any) {
         return new Error(error.message)
     }

@@ -11,6 +11,7 @@ const userSchema = new Schema<userType>({
         minlength: [4, 'Name must be at least 4 characters'],
         maxlength: [16, 'Name cannot be more than 16 characters'],
         required: [true, 'Enter your name'],
+        trim: true,
     },
     email: {
         type: String,
@@ -22,6 +23,7 @@ const userSchema = new Schema<userType>({
             },
             message: 'Please enter a valid email'
         },
+        trim: true,
 
     },
     password: {
@@ -29,7 +31,8 @@ const userSchema = new Schema<userType>({
         required: [true, 'please enter password'],
         minlength: [4, 'password must be at least 4 characters'],
         maxlength: [15, 'Password cannot be more than 15 characters'],
-        select: false
+        select: false,
+        trim: true
     },
     profile: {
         public_id: String,

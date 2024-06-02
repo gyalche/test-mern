@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../utils/error/errorHandler";
+import mongoose from "mongoose";
 
 export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
 
@@ -12,11 +13,10 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
         const message = `Resource not found`;
         err = new ErrorHandler(400, message);
     }
-
-    //validation error;
-    if (err.name === 'ValidationError') {
-        const messages = Object.values(err).map((val: any) => val.message);
-        err = new ErrorHandler(400, messages)
+    // Mongoose schema error
+    if (err instanceof mongoose.Error.ValidationError) {
+        const messages = Object.values(err.errors).map((val: any) => val.message);
+        err = new ErrorHandler(400, messages);
     }
 
     //duplicate key error;
@@ -36,7 +36,7 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
         const message = `Json web token is expired try again`;
         err = new ErrorHandler(400, message);
     }
-    res.status(err.statusCode).json({
+    return res.status(err.statusCode).json({
         success: false,
         message: err.message,
     });
