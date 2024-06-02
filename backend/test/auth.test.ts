@@ -67,13 +67,15 @@ describe('authentication middleware', () => {
 });
 
 describe('authorization middleware', () => {
-    let req: Partial<Request>;
+    let req: Partial<any>;
     let res: Partial<Response>;
     let next: NextFunction;
 
     beforeEach(() => {
         req = {
+            user: 'admin'
         };
+
         res = {};
         next = jest.fn();
     });
@@ -81,7 +83,6 @@ describe('authorization middleware', () => {
     it('should deny access if role is user', () => {
         const authorizeUser = authorization('user');
         authorizeUser(req as Request, res as Response, next);
-
         expect(next).toHaveBeenCalledWith(new ErrorHandler(404, 'Accessed denied to user '));
     });
 

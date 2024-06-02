@@ -32,7 +32,6 @@ export const authorization = (roles: string) => {
                 new ErrorHandler(
                     404,
                     `Accessed denied to ${req.user?.role} `,
-
                 )
             );
         }
