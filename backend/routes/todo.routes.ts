@@ -1,6 +1,6 @@
 import express from 'express';
 import { authentication } from '../middleware/auth';
-import { createTodoList, getTodoList, updateTodoList } from '../controller/todoList.controller';
+import { createTodoList, deleteTask, getTodoList, updateTodoList } from '../controller/todoList.controller';
 
 const todoRoutes = express.Router();
 
@@ -12,6 +12,9 @@ todoRoutes.get(`/get-todo`, authentication, getTodoList);
 
 //update;
 todoRoutes.put('/update-todo/:id', authentication, updateTodoList)
+
+//delete
+todoRoutes.delete('/delete-todo/:id', authentication, deleteTask)
 
 
 

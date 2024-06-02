@@ -55,12 +55,15 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
             return next(new ErrorHandler(404, 'No id found'))
         }
         const verifyUserCreated = await todoModel.findById(id)
-        console.log(String(userId), String(verifyUserCreated?.createdBy))
+        if (!verifyUserCreated) {
+            return next(new ErrorHandler(400, 'No task found with given id'))
+        }
+
         if (String(userId) !== String(verifyUserCreated?.createdBy)) {
             return next(new ErrorHandler(401, 'You are not authorized to delete  this task'));
         }
         const todo = await todoModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: 'successfully updated',
             data: todo
@@ -75,6 +78,23 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
 export const deleteTask = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
+        const userId = req.user?._id
+        if (!id) {
+            return next(new ErrorHandler(404, 'No id found'))
+        }
+        const verifyUserCreated = await todoModel.findById(id)
+        if (!verifyUserCreated) {
+            return next(new ErrorHandler(400, 'No task found with given id'))
+        }
+        if (String(userId) !== String(verifyUserCreated?.createdBy)) {
+            return next(new ErrorHandler(401, 'You are not authorized to delete  this task'));
+        }
+        const todo = await todoModel.findByIdAndDelete(id);
+        res.status(200).json({
+            success: true,
+            message: 'successfully deleted',
+            data: todo
+        })
 
     } catch (error: any) {
         next(new ErrorHandler(400, error.message))
