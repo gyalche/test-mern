@@ -5,8 +5,6 @@ import userModel from '../model/user.model';
 import ErrorHandler from '../utils/error/errorHandler';
 import { authentication, authorization } from '../middleware/auth';
 import { userType } from "../@types/user";
-
-
 declare module 'express-serve-static-core' {
     interface Request {
         user?: userType;

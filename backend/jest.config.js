@@ -7,4 +7,9 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.jest.json',
+    },
+  },
 };
