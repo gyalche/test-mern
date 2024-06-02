@@ -81,7 +81,7 @@ describe("userRegister", () => {
         next = jest.fn();
     });
 
-    it("user register shoudd be sucesfull", async () => {
+    it("user register should be succesfull", async () => {
         (userModel.findOne as jest.Mock).mockResolvedValue(null);
         (createActivationToken as jest.Mock).mockReturnValue({
             activation_code: "123456",
