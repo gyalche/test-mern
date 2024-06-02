@@ -4,8 +4,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { DBConnection } from './utils/db/database';
 import morgan from 'morgan';
-import { v2 as cloudinary } from 'cloudinary';
+// import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+
+
 
 //routes import
 import userRoute from './routes/user.routes'
@@ -13,12 +15,12 @@ import todoRoutes from './routes/todo.routes';
 
 dotenv.config();
 
-//cloudianry configuration
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// //cloudianry configuration
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_NAME,
+//     api_key: process.env.CLOUDINARY_API_KEY,
+//     api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 const app = express();
 
@@ -41,12 +43,10 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorMiddleware);
 
+
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
-    console.log(`server is running on http://localhost:${PORT}`)
-    DBConnection()
-})
+export { app, PORT }
 
 
 
