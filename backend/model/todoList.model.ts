@@ -14,11 +14,6 @@ const todoSchema = new Schema<TodoTypes>({
         trim: true,
 
     },
-    dueDate: {
-        type: Date,
-        required: true,
-        default: Date.now()
-    },
     priority: {
         type: String,
         enum: ['low', 'medium', 'high'],

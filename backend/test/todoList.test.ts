@@ -21,7 +21,6 @@ describe('To do lists', () => {
             body: {
                 title: 'Test Task',
                 description: 'Test Description',
-                dueDate: '2024-12-31',
                 priority: 'High'
             }
         };
@@ -41,7 +40,6 @@ describe('To do lists', () => {
             _id: 'taskId123',
             title: 'Test Task',
             description: 'Test Description',
-            dueDate: '2024-12-31',
             priority: 'High',
             createdBy: 'userId123'
         });

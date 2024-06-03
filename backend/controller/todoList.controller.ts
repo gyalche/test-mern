@@ -7,7 +7,7 @@ import { TodoTypes } from "../@types/todo";
 export const createTodoList = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user._id;
-        const { title, description, dueDate, priority } = req.body as TodoTypes;
+        const { title, description, priority } = req.body as TodoTypes;
 
         // Check if the title already exists among all tasks
         const existingTask = await todoModel.findOne({ title: { $regex: new RegExp(`^${title}$`, 'i') }, createdBy: id });
@@ -15,7 +15,7 @@ export const createTodoList = catchAsyncError(async (req: any, res: Response, ne
             return next(new ErrorHandler(400, 'Task with this title already exists'));
         }
         const data = {
-            title, description, dueDate, priority, createdBy: id
+            title, description, priority, createdBy: id
         }
         const todoList = await todoModel.create(data)
         todoList.save();
@@ -32,7 +32,7 @@ export const createTodoList = catchAsyncError(async (req: any, res: Response, ne
 export const getTodoList = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user?._id;
-        const user = await todoModel.find({ createdBy: id });
+        const user = await todoModel.find({ createdBy: id }).sort({ createdAt: -1 });
         if (!user) {
             return next(new ErrorHandler(400, 'No todo list found'))
         }
@@ -55,6 +55,7 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
             return next(new ErrorHandler(404, 'No id found'))
         }
         const verifyUserCreated = await todoModel.findById(id)
+        console.log(verifyUserCreated)
         if (!verifyUserCreated) {
             return next(new ErrorHandler(400, 'No task found with given id'))
         }

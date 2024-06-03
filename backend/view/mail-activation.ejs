@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Activation</title>
+    <title>%SUBJECT%</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -56,13 +56,11 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1>Account Activation</h1>
+        <h1>Confirmation</h1>
       </div>
       <div class="content">
         <h2>Hello, <%= user.name %>!</h2>
-        <h3>
-          This is your activation code: <strong><%= activation_code %></strong>
-        </h3>
+        <h3>confirmation code: <strong><%= activation_code %></strong></h3>
       </div>
     </div>
   </body>

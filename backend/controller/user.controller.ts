@@ -58,6 +58,9 @@ export const userRegister = catchAsyncError(
 export const activateUser = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { token, activation_code } = req.body as ActivateUser;
+        if (!activation_code) {
+            return next(new ErrorHandler(400, 'Please enter code'))
+        }
         const myUser: { user: userType, activation_code: any } = jwt.verify(
             token,
             process.env.ACTIVATION_SECRET as string
@@ -102,6 +105,7 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
         if (!passwordMatch) {
             return next(new ErrorHandler(404, 'incorrect password'))
         }
+
         process.nextTick(() => {
             jwtToken(user, 201, res)
         })
