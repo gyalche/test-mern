@@ -179,6 +179,14 @@ export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next
 export const updateUser = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user?._id;
+
+        if (req.body.email) {
+            //not allowing user to update email when it is used by other;
+            const emailBelongToOther = await userModel.findOne({ email: req.body.email });
+            if (emailBelongToOther) {
+                return next(new ErrorHandler(400, "This email is already registered"))
+            }
+        }
         const user = await userModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
         res.status(201).json({
             success: true,
@@ -262,11 +270,11 @@ export const changePassword = catchAsyncError(async (req: any, res: Response, ne
         const oldPasswordMatch = await bcrypt.compare(oldPassword, user?.password);
         if (!oldPasswordMatch) return next(new ErrorHandler(400, 'old password doest not match'));
         const hashPassword = await bcrypt.hash(password, 10);
+
         await userModel.findByIdAndUpdate(id, { password: hashPassword });
         res.status(201).json({
             success: true,
             message: 'password update sucessfully',
-
         })
     } catch (error: any) {
         return next(new ErrorHandler(400, error.message))

@@ -5,7 +5,7 @@ describe('API tests', () => {
   let token = '';
   beforeEach(() => {
     cy.request({
-      url: '/api/v1/auth/login',
+      url: `/api/v1/auth/login`,
       form: true,
       body: {
         email: 'dawa.sherpa@esignature.com.np',
