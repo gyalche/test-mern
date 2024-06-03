@@ -1,26 +1,18 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { errorMiddleware } from './middleware/error';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { DBConnection } from './utils/db/database';
+import cors from 'cors';
+import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
-// import { v2 as cloudinary } from 'cloudinary';
+import { errorMiddleware } from './middleware/error';
+
 import dotenv from 'dotenv';
 
 
 
 //routes import
-import userRoute from './routes/user.routes'
 import todoRoutes from './routes/todo.routes';
+import userRoute from './routes/user.routes';
 
 dotenv.config();
-
-// //cloudianry configuration
-// cloudinary.config({
-//     cloud_name: process.env.CLOUDINARY_NAME,
-//     api_key: process.env.CLOUDINARY_API_KEY,
-//     api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
 
 const app = express();
 
@@ -29,7 +21,8 @@ app.use(express.json({ limit: '40mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan('dev'))
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
+
 
 //routes;
 app.use('/api/v1/auth', userRoute)
@@ -47,7 +40,7 @@ app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 8000;
 
-export { app, PORT }
+export { PORT, app };
 
 
 

@@ -253,11 +253,8 @@ export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Respon
 export const changePassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
 
-        const { oldPassword, password, reTypePassword } = req.body;
+        const { oldPassword, password } = req.body;
         if (!oldPassword) return next(new ErrorHandler(400, 'please enter old password'))
-        if (oldPassword && password !== reTypePassword) {
-            return next(new ErrorHandler(400, 'Password doestnot match'))
-        }
         const id = req.user._id;
         const user = await userModel.findById(id).select("+password");
         if (!user) return next(new ErrorHandler(400, 'User doesnt exist'));

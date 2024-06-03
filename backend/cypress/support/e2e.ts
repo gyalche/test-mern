@@ -3,12 +3,11 @@ import './commands'
 
 export const getToken = {
     method: 'POST',
-    url: 'http://localhost:8000/auth',
+    url: 'auth/login',
     form: true,
     body: {
-        //here you will send all needed information to access your API
-        email: 'viktorialutskaya@freeprodesign.com',
-        password: 'kanchaisdon'
+        email: 'dawa.sherpa@esignature.com.np',
+        password: 'dawasherpa'
     }
 }
 
