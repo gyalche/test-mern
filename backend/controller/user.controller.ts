@@ -66,8 +66,6 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
             process.env.ACTIVATION_SECRET as string
         ) as any;
 
-        console.log("users", myUser)
-
         if (myUser.activation_code !== activation_code) {
             return next(new ErrorHandler(400, 'Invalid activation code'))
         }
@@ -76,7 +74,6 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         if (emailExist) {
             return next(new ErrorHandler(400, 'Email already exists'))
         }
-        console.log('User create payload:', { name, email, password })
         const user = await userModel.create({ name, email, password })
         user.save();
         // Exclude password from the response
@@ -99,9 +96,8 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
         if (!user) {
             return next(new ErrorHandler(404, 'user not found'))
         }
-        console.log("email", user)
         const passwordMatch = await user.comparePassword(password);
-        console.log("check compare", passwordMatch)
+
         if (!passwordMatch) {
             return next(new ErrorHandler(404, 'incorrect password'))
         }
@@ -119,9 +115,7 @@ export const userLogin = catchAsyncError(async (req: Request, res: Response, nex
 export const getUserInfo = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user?._id;
-        console.log("userid", id)
         const user = await userModel.findById(id);
-        // console.log("user", user)
         res.status(200).json({
             success: true,
             user,
@@ -135,7 +129,6 @@ export const getUserInfo = catchAsyncError(async (req: any, res: Response, next:
 export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { profile } = req.body;
-        console.log(profile)
         const id = req.user?._id;
         const user = await userModel.findById(id) as any;
 
@@ -170,7 +163,6 @@ export const uploadPhotos = catchAsyncError(async (req: any, res: Response, next
             data: user
         })
     } catch (error: any) {
-        console.log(error.message)
         next(new ErrorHandler(404, error.message))
     }
 })
@@ -209,7 +201,7 @@ export const forgotPassword = catchAsyncError(async (req: any, res: Response, ne
         }
         const { activation_code, token } = createActivationToken(user);
         const data = { user: { name: user.name }, activation_code };
-        console.log(data)
+
         process.nextTick(async () => {
             sendMail({
                 email: user.email,

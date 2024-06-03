@@ -27,12 +27,11 @@ export const authentication = catchAsyncError(async (req: any, res: Response, ne
 //authorize  role;
 export const authorization = (roles: string) => {
     return (req: any, res: Response, next: NextFunction) => {
-        if (roles === 'user') {
+        if (!roles.includes('user')) {
             return next(
                 new ErrorHandler(
                     404,
                     `Accessed denied to ${req.user?.role} `,
-
                 )
             );
         }

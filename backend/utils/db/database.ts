@@ -10,7 +10,6 @@ export const DBConnection = async () => {
             console.log(`database is connect to ${data?.connection?.host}`)
         })
     } catch (error: any) {
-        console.log(error.message);
         setTimeout(DBConnection, 5000);
     }
 }

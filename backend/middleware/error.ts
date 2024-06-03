@@ -7,7 +7,6 @@ export const errorMiddleware = (err: any, req: Request, res: Response, next: Nex
     err.statusCode = err.statusCode || 500;
     err.message = err.message || 'Internal server error';
 
-
     //if wrong mongodbid error;
     if (err.name === 'CastError') {
         const message = `Resource not found`;

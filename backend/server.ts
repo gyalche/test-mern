@@ -1,8 +1,7 @@
-import express from 'express'
-import { app, PORT } from './app'
-import cluster from 'cluster';
-import { DBConnection } from './utils/db/database';
 import { v2 as cloudinary } from 'cloudinary';
+import cluster from 'cluster';
+import { app, PORT } from './app';
+import { DBConnection } from './utils/db/database';
 
 
 const totalCPUs = require("os").availableParallelism();
@@ -15,21 +14,16 @@ cloudinary.config({
 });
 
 if (cluster.isPrimary) {
-    console.log(`Number of CPUs is ${totalCPUs}`);
-    console.log(`Primary ${process.pid} is running`);
-
+    console.log(`Number of cpu is ${totalCPUs}`);
     // Fork workers.
     for (let i = 0; i < totalCPUs; i++) {
         cluster.fork();
     }
-
     cluster.on("exit", (worker: { process: { pid: any; }; }, code: any, signal: any) => {
         console.log(`worker ${worker.process.pid} died`);
-        console.log("Let's fork another worker!");
         cluster.fork();
     });
 } else {
-
     app.listen(PORT, () => {
         console.log(`server is running on http://localhost:${PORT}`)
         DBConnection()

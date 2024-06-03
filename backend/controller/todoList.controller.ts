@@ -52,8 +52,6 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
         if (date) {
             query.creationDate = date
         }
-
-        console.log('title', query)
         const user = await todoModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
         if (!user) {
             return next(new ErrorHandler(400, 'No todo list found'))
@@ -81,7 +79,7 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
             return next(new ErrorHandler(404, 'No id found'))
         }
         const verifyUserCreated = await todoModel.findById(id)
-        console.log(verifyUserCreated)
+
         if (!verifyUserCreated) {
             return next(new ErrorHandler(400, 'No task found with given id'))
         }
