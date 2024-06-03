@@ -5,16 +5,16 @@ import { createTodoList, deleteTask, getTodoList, updateTodoList } from '../cont
 const todoRoutes = express.Router();
 
 //posts
-todoRoutes.post(`/create-todo`, authentication, createTodoList);
+todoRoutes.post(`/todo`, authentication, createTodoList);
 
 //get
-todoRoutes.get(`/get-todo`, authentication, getTodoList);
+todoRoutes.get(`/todo`, authentication, getTodoList);
 
 //update;
-todoRoutes.put('/update-todo/:id', authentication, updateTodoList)
+todoRoutes.put('/todo/:id', authentication, updateTodoList)
 
 //delete
-todoRoutes.delete('/delete-todo/:id', authentication, deleteTask)
+todoRoutes.delete('/todo/:id', authentication, deleteTask)
 
 
 

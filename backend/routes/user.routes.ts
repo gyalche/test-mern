@@ -7,13 +7,13 @@ const userRoute = express.Router();
 
 //post request
 userRoute.post('/register', userRegister)
-userRoute.post('/active-user', activateUser)
+userRoute.post('/activate', activateUser)
 userRoute.post('/login', userLogin)
 userRoute.post('/forgot-password', authentication, forgotPassword)
 
 //get request
-userRoute.get('/refresh', refreshToken)
-userRoute.get('/user-info', authentication, getUserInfo)
+userRoute.get('/refresh-token', refreshToken)
+userRoute.get('/user', authentication, getUserInfo)
 
 //put && patch;
 userRoute.patch('/upload-photo', authentication, uploadPhotos)

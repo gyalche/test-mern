@@ -32,7 +32,8 @@ app.use(morgan('dev'))
 app.use(cors({ origin: process.env.ORIGIN }));
 
 //routes;
-app.use('/auth', userRoute, todoRoutes)
+app.use('/api/v1/auth', userRoute)
+app.use('/api/v1/task', todoRoutes)
 
 //unknown routes;
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

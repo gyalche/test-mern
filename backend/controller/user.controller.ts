@@ -73,9 +73,12 @@ export const activateUser = catchAsyncError(async (req: Request, res: Response, 
         if (emailExist) {
             return next(new ErrorHandler(400, 'Email already exists'))
         }
+        console.log('User create payload:', { name, email, password })
         const user = await userModel.create({ name, email, password })
         user.save();
-        res.status(201).json({ success: true, data: user })
+        // Exclude password from the response
+        const { password: _, ...userWithoutPassword } = user.toObject();
+        res.status(201).json({ success: true, data: userWithoutPassword })
     } catch (error: any) {
         next(new ErrorHandler(400, error.message))
     }

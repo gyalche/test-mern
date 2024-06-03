@@ -18,12 +18,9 @@ export const sendMail = async (options: emailOption) => {
             }
         })
         const { email, subject, template, data } = options;
-
         const emailTemplate = path.join(__dirname, '../../view', template);
-
         const html = await ejs.renderFile(emailTemplate, data);
 
-        console.log("html", html)
         let mailOption = {
             from: process.env.SMTP_EMAIL,
             to: email,

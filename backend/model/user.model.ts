@@ -69,4 +69,7 @@ userSchema.methods.signInRefreshToken = function () {
 }
 const userModel = model<userType>('user', userSchema);
 
+
+
+
 export default userModel;
