@@ -1,17 +1,19 @@
-FROM node:10-alpine
+FROM node:16
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+# Set working directory
+WORKDIR /app
 
-WORKDIR /server
-
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-USER node
-
+# Install dependencies
 RUN npm install
 
-COPY --chown=node:node . .
+# Copy source code
+COPY . .
 
-EXPOSE 8000
+# Expose port
+EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+# Command to run the application
+CMD ["npm", "dev"]

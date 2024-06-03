@@ -22,6 +22,10 @@ const todoSchema = new Schema<TodoTypes>({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
+    },
+    creationDate: {
+        type: String,
+        default: new Date(Date.now()).toISOString().split("T")[0]
     }
 }, { timestamps: true })
 
