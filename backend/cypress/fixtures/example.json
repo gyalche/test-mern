@@ -1,0 +1,5 @@
+{
+  "name": "test sherpa",
+  "email": "dawa@gmail.com",
+  "baseUrl": "http://localhost:8000/auth"
+}
