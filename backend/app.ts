@@ -9,6 +9,7 @@ dotenv.config();
 //routes import
 import todoRoutes from './routes/todo.routes';
 import userRoute from './routes/user.routes';
+import adminRoutes from './routes/admin.routes';
 
 const app = express();
 
@@ -20,9 +21,12 @@ app.use(morgan('dev'))
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 
+
 //routes;
-app.use('/api/v1/auth', userRoute)
-app.use('/api/v1/task', todoRoutes)
+const baseUrl = '/api/v1';
+app.use(`${baseUrl}/auth`, userRoute)
+app.use(`${baseUrl}/task`, todoRoutes)
+app.use(`${baseUrl}/admin`, adminRoutes)
 
 //unknown routes;
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

@@ -27,7 +27,7 @@ export const authentication = catchAsyncError(async (req: any, res: Response, ne
 //authorize  role;
 export const authorization = (roles: string) => {
     return (req: any, res: Response, next: NextFunction) => {
-        if (!roles.includes('user')) {
+        if (roles !== 'admin') {
             return next(
                 new ErrorHandler(
                     404,

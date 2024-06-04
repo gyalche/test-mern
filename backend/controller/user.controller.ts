@@ -272,3 +272,5 @@ export const changePassword = catchAsyncError(async (req: any, res: Response, ne
         return next(new ErrorHandler(400, error.message))
     }
 })
+
+

@@ -4,6 +4,7 @@ import todoModel from "../model/todoList.model";
 import ErrorHandler from "../utils/error/errorHandler";
 import { TodoTypes } from "../@types/todo";
 
+//create task;
 export const createTodoList = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const id = req.user._id;
@@ -29,8 +30,10 @@ export const createTodoList = catchAsyncError(async (req: any, res: Response, ne
     }
 })
 
+//get task;
 export const getTodoList = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
+        const role = req.user?.role
         const id = req.user?._id;
 
         //pagination
@@ -42,7 +45,7 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
         const date = req.query.date || ''
         const priority = req.query.priority ? req.query.priority : '';
 
-        const query: any = { createdBy: id };
+        const query: any = role === 'user' ? { createdBy: id } : {};
         if (title) {
             query.title = new RegExp(title, 'i');
         }
@@ -90,7 +93,7 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
         }
 
         if (String(userId) !== String(verifyUserCreated?.createdBy)) {
-            return next(new ErrorHandler(401, 'You are not authorized to delete  this task'));
+            return next(new ErrorHandler(400, 'You are not authorized to delete  this task'));
         }
         const todo = await todoModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
         res.status(200).json({
@@ -117,7 +120,7 @@ export const deleteTask = catchAsyncError(async (req: any, res: Response, next: 
             return next(new ErrorHandler(400, 'No task found with given id'))
         }
         if (String(userId) !== String(verifyUserCreated?.createdBy)) {
-            return next(new ErrorHandler(401, 'You are not authorized to delete  this task'));
+            return next(new ErrorHandler(400, 'Unable to delete'));
         }
         const todo = await todoModel.findByIdAndDelete(id);
         res.status(200).json({
@@ -130,4 +133,6 @@ export const deleteTask = catchAsyncError(async (req: any, res: Response, next: 
         next(new ErrorHandler(400, error.message))
     }
 })
+
+
 
