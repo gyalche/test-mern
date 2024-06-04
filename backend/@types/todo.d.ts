@@ -5,5 +5,4 @@ interface TodoTypes extends Document {
     description?: string,
     priority?: 'low' | 'medium' | 'high';
     createdBy?: Types.ObjectId,
-    creationDate?: Date
 }
