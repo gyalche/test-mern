@@ -1,10 +1,13 @@
-import './App.css';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
+import { Navbar } from './components/navbar';
 
 function App() {
   return (
-    <>
-      <h1>HELLOW WORLD REALLY oke</h1>
-    </>
+    <div>
+      <Navbar />
+      <RouterProvider router={router} />
+    </div>
   );
 }
 
