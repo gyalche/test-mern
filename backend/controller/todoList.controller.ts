@@ -57,7 +57,6 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
             query.createdAt = { $gte: startDate, $lte: endDate };
         }
 
-
         const user = await todoModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
         if (!user) {
             return next(new ErrorHandler(400, 'No todo list found'))
