@@ -3,16 +3,12 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import { errorMiddleware } from './middleware/error';
-
 import dotenv from 'dotenv';
-
-
+dotenv.config();
 
 //routes import
 import todoRoutes from './routes/todo.routes';
 import userRoute from './routes/user.routes';
-
-dotenv.config();
 
 const app = express();
 

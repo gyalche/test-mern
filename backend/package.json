@@ -4,7 +4,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "node dist/server.ts",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon server.ts",
     "test": "jest",
     "cypress": "cypress open"
   },
