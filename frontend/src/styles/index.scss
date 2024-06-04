@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+//color variables;
+$navbarBackground: rgb(239, 239, 244);
+
+//navbar;
+.navbar {
+  background-color: $navbarBackground;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  justify-content: space-between;
+}
