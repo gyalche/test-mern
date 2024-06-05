@@ -224,7 +224,6 @@ export const forgotPassword = catchAsyncError(async (req: any, res: Response, ne
 export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
         const { password, activation_code, token, email } = req.body;
-        const id = req.user?._id;
 
         if (!password) return next(new ErrorHandler(400, 'Password enter password'))
 
@@ -237,8 +236,10 @@ export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Respon
             return next(new ErrorHandler(400, 'Invalid activation code'))
         }
         const hashedPassword = await bcrypt.hash(password, 10)
-        await userModel.findOneAndUpdate({email}, { password: hashedPassword })
+        await userModel.findOneAndUpdate({ email }, { password: hashedPassword }, {new:true})
+        console.log("hashedPassword", hashedPassword)
         const user = await userModel.findOne({email})
+        console.log("user", user)
         res.status(200).json({
             success: true,
             message: 'successfully password updated',

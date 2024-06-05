@@ -20,7 +20,6 @@ userRoute.post('/forgot-password', forgotPassword)
 userRoute.get('/refresh-token', refreshToken)
 userRoute.get('/user', authentication, getUserInfo)
 
-
 //put && patch;
 userRoute.patch('/upload-photo', authentication, uploadPhotos)
 userRoute.put('/update-user', updateUserValidation, authentication, updateUser)
