@@ -175,7 +175,8 @@ export const updateUser = catchAsyncError(async (req: any, res: Response, next: 
         if (req.body.email) {
             //not allowing user to update email when it is used by other;
             const emailBelongToOther = await userModel.findOne({ email: req.body.email });
-            if (emailBelongToOther) {
+            const user=await userModel.findById(id);
+            if (user?.email !==req.body.email && emailBelongToOther) {
                 return next(new ErrorHandler(400, "This email is already registered"))
             }
         }
