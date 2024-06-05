@@ -2,6 +2,8 @@
 import { Form, FormikProvider, useFormik } from 'formik';
 import { InputComponent } from '../../UI/InputComponent';
 import MyButton from '../../UI/Button';
+import { useMutation } from 'react-query';
+import { loginUser } from '../../apis/auth/login';
 
 
 const inputFields = (
@@ -28,6 +30,17 @@ const inputFields = (
 
 const LoginComponent = () => {
 
+  const {
+    mutate: loginMutation,
+    isSuccess,
+    error,
+    isPending,
+    status,
+    data: userData,
+  } = useMutation('login-user', loginUser);
+
+
+  console.log("check", isSuccess)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -35,7 +48,7 @@ const LoginComponent = () => {
     },
     enableReinitialize: true,
     onSubmit: async (values: any) => {
-     console.log('this is values', values)
+     await loginMutation(values)
     },
   });
 

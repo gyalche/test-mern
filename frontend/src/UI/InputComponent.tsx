@@ -28,6 +28,7 @@ export const InputComponent = ({
       margin="normal"
       required={required}
       fullWidth
+
       size="small"
       type={showPassword ? 'text' : type}
       label={label}
