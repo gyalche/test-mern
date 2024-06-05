@@ -1,12 +1,11 @@
-import { RouterProvider } from 'react-router-dom';
+import { Outlet, RouterProvider } from 'react-router-dom';
 import { router } from './routes';
-import { Navbar } from './components/navbar';
 
 function App() {
   return (
     <>
-      <Navbar />
       <RouterProvider router={router} />
+      <Outlet />
     </>
   );
 }

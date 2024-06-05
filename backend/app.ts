@@ -21,7 +21,6 @@ app.use(morgan('dev'))
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 
-
 //routes;
 const baseUrl = '/api/v1';
 app.use(`${baseUrl}/auth`, userRoute)
@@ -36,7 +35,6 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(errorMiddleware);
-
 
 const PORT = process.env.PORT || 8000;
 

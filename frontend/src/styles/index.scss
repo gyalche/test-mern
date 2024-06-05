@@ -4,15 +4,92 @@
   box-sizing: border-box;
   font-size: 16px;
 }
-//color variables;
-$navbarBackground: rgb(239, 239, 244);
+
+:root {
+  --background-nav: rgb(239, 239, 244);
+}
+
+//media query;
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) {
+    @content;
+  }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) {
+    @content;
+  }
+}
 
 //navbar;
 .navbar {
-  background-color: $navbarBackground;
+  background-color: var(--background-nav);
   height: 50px;
   display: flex;
   align-items: center;
   padding: 20px;
   justify-content: space-between;
+}
+
+@mixin display-center-column {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  flex-direction:column;
+}
+//login page;
+.login {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  .heading{
+    display:flex;
+    margin-top:20px;
+  }
+  .container {
+    width: 40%;
+    height: calc(100vh - 40vh);
+    border: 1px solid;
+    border-radius: 20px;
+ 
+    gap:10px;
+    @include display-center-column;
+    @include for-phone-only() {
+      width: 80%;
+    }
+    .form{
+      margin-top:4%;
+      .passwordForgot{
+      width:100%;
+         padding:10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:10px;
+      border:1px solid;
+    }
+    }
+    .createAccount{
+      margin-top:20px;
+    }
+ 
+  }
 }

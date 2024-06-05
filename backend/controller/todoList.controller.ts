@@ -41,11 +41,13 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
+        //filter
         const title = req.query.title || '';
         const date = req.query.date || ''
         const priority = req.query.priority ? req.query.priority : '';
 
         const query: any = role === 'user' ? { createdBy: id } : {};
+        console.log("query", query)
         if (title) {
             query.title = new RegExp(title, 'i');
         }
@@ -60,8 +62,9 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
             query.createdAt = { $gte: startDate, $lte: endDate };
         }
 
-        const user = await todoModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
-        if (!user) {
+        const todo = await todoModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        console.log(todo)
+        if (!todo.length) {
             return next(new ErrorHandler(400, 'No todo list found'))
         }
         const totalData = await todoModel.countDocuments(query)
@@ -71,7 +74,7 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
             limit,
             totalPage: Math.ceil(totalData / limit),
             totalData,
-            data: user,
+            data: todo,
         })
     } catch (error: any) {
         new ErrorHandler(400, error.message)
