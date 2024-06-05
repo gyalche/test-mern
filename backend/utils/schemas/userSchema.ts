@@ -8,7 +8,7 @@ const profileSchema = z.object({
 export const userRegistrationSchema = z.object({
     name: z.string().min(4).max(20).transform((val) => val.trim()),
     email: z.string().email().transform((val) => val.trim()),
-    password: z.string().min(6).transform((val) => val.trim()),
+    password: z.string().min(4).transform((val) => val.trim()),
     profile: profileSchema,
     role: z.string().optional()
 });

@@ -194,8 +194,8 @@ export const updateUser = catchAsyncError(async (req: any, res: Response, next: 
 //forgot password token
 export const forgotPassword = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const id = req.user?._id;
-        const user: any = await userModel.findById(id).select("+password");
+        const {email}=req.body;
+        const user: any = await userModel.findOne({email}).select("+password");
         if (!user) {
             return next(new ErrorHandler(404, 'user doesnt exist'));
         }
@@ -223,7 +223,7 @@ export const forgotPassword = catchAsyncError(async (req: any, res: Response, ne
 // update password with code;
 export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const { password, activation_code, token } = req.body;
+        const { password, activation_code, token, email } = req.body;
         const id = req.user?._id;
 
         if (!password) return next(new ErrorHandler(400, 'Password enter password'))
@@ -237,8 +237,8 @@ export const forgotPasswordUpdate = catchAsyncError(async (req: any, res: Respon
             return next(new ErrorHandler(400, 'Invalid activation code'))
         }
         const hashedPassword = await bcrypt.hash(password, 10)
-        await userModel.findByIdAndUpdate(id, { password: hashedPassword })
-        const user = await userModel.findById(id)
+        await userModel.findOneAndUpdate({email}, { password: hashedPassword })
+        const user = await userModel.findOne({email})
         res.status(200).json({
             success: true,
             message: 'successfully password updated',

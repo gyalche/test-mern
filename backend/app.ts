@@ -18,7 +18,8 @@ app.use(express.json({ limit: '40mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan('dev'))
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+// app.use(cors({ origin: process.env.CORS_ORIGIN }));
+app.use(cors())
 
 
 //routes;

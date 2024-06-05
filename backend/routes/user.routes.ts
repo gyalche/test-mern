@@ -14,17 +14,17 @@ const updateUserValidation = dataValidation(updateUserSchema);
 userRoute.post('/register', registerValidation, userRegister)
 userRoute.post('/activate', activateUser)
 userRoute.post('/login', userLogin)
-
+userRoute.post('/forgot-password', forgotPassword)
 
 //get request
 userRoute.get('/refresh-token', refreshToken)
 userRoute.get('/user', authentication, getUserInfo)
-userRoute.post('/forgot-password', authentication, forgotPassword)
+
 
 //put && patch;
 userRoute.patch('/upload-photo', authentication, uploadPhotos)
 userRoute.put('/update-user', updateUserValidation, authentication, updateUser)
-userRoute.put('/update-password', authentication, forgotPasswordUpdate)
+userRoute.put('/update-password', forgotPasswordUpdate)
 userRoute.patch('/change-password', authentication, changePassword)
 
 export default userRoute;
