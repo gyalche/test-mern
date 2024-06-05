@@ -19,7 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <PersistGate loading={null} persistor={persistor}>
             <App />
           </PersistGate>
-
           <Toaster position="top-center" reverseOrder={false} />
         </Provider>
       </ThemeProvider>

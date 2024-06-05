@@ -5,7 +5,7 @@ import LoginComponent from '../../components/auth/LoginComponent';
 
 const Login = () => {
   return (
-    <div className="login">
+    <div className="auth_form">
       <LoginComponent />
     </div>
   );

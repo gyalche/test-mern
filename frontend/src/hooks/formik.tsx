@@ -8,8 +8,8 @@ export const useFormikHook = ({
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit:async(values:any)=>{
-      submitFunction(values)
+    onSubmit: async (values: any) => {
+      submitFunction(values);
     },
   });
 

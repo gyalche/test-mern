@@ -7,6 +7,8 @@
 
 :root {
   --background-nav: rgb(239, 239, 244);
+  --hover-color: rgb(41, 41, 228);
+  --box-shadow: 0px 2px 22px -7px rgba(150, 131, 150, 1);
 }
 
 //media query;
@@ -35,6 +37,16 @@
     @content;
   }
 }
+@mixin display-center-column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+@mixin display-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 //navbar;
 .navbar {
@@ -46,14 +58,8 @@
   justify-content: space-between;
 }
 
-@mixin display-center-column {
-  display: flex;
-  align-items: center;
-  // justify-content: center;
-  flex-direction:column;
-}
 //login page;
-.login {
+.auth_form {
   display: flex;
   align-items: center;
   width: 100%;
@@ -61,40 +67,91 @@
   justify-content: center;
   height: 100vh;
 
-  .heading{
-    display:flex;
-    margin-top:20px;
+  .heading {
+    display: flex;
+    margin-top: 20px;
   }
   .container {
     width: 40%;
     height: calc(100vh - 50vh);
     border-radius: 20px;
-    box-shadow: 0px 2px 22px -7px rgba(150,131,150,1);
- 
-    gap:10px;
+    box-shadow: var(--box-shadow);
+
+    gap: 10px;
     @include display-center-column;
     @include for-phone-only() {
       width: 80%;
     }
-    .form{
-      margin-top:4%;
-      .input{
-        padding:10px;
+    .form {
+      margin-top: 4%;
+      .input {
+        padding: 10px;
       }
-      .passwordForgot{
-      width:100%;
-      padding:10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
-      gap:10px;
-
+      .passwordForgot {
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 10px;
+      }
     }
+    .createAccount {
+      padding: 10px;
+      margin-top: 20px;
     }
-    .createAccount{
-      padding:10px;
-      margin-top:20px;
+    .createAccount:hover {
+      color: var(--hover-color);
     }
- 
   }
+}
+
+//register
+.admin-create {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: gray;
+  input {
+    outline: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 4px;
+  }
+  .key_input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+//OPT modal design;
+.otp-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-height: 300px;
+  max-height: 400px;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  padding: 5px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  .optInput {
+    height: 250px;
+    @include display-flex-center;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+.textAlignEnd{
+  text-align:end;
+  color:black;
+  cursor:pointer;
+  
+}
+.textAlignEnd:hover{
+    color:blue;
 }
