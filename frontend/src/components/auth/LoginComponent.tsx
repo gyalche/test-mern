@@ -9,7 +9,7 @@ import { loginUser } from '../../apis/auth';
 import {
   storeAccessToken,
   storeRefreshToken,
-  storeUserInfo,
+  storeUserInfo
 } from '../../services/redux/slices/user.slice';
 import { OtpModal } from '../otpModal';
 
@@ -68,19 +68,22 @@ const LoginComponent = () => {
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   useEffect(() => {
-    dispatch(storeUserInfo(userData?.data));
-    dispatch(storeAccessToken(userData?.access_token));
-    dispatch(storeRefreshToken(userData?.refresh_token));
-  }, [isSuccess, userData?.data]);
+    if(isSuccess){
+        dispatch(storeUserInfo(userData?.data));
+        dispatch(storeAccessToken(userData?.access_token));
+        dispatch(storeRefreshToken(userData?.refresh_token));
+        navigate('/home');
+    }
+  }, [isSuccess]);
 
+  
   return (
     <>
       {open && <OtpModal type={type} open={open} close={handleClose} />}
       <div className="container">
         <div className="heading">
-          <h1>WELCOME TO LOGIN</h1>
+          <h1>LOGIN</h1>
         </div>
-
         <FormikProvider value={formik}>
           <Form className="form" onSubmit={handleSubmit}>
             <div className="input">

@@ -3,44 +3,39 @@ import React, { useEffect, useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { wrongIcon } from '../../assets/icons';
 import { useMutation } from 'react-query';
-import { activateAccount, resetPasswordWithOtp, sendMailRecoverPassword } from '../../apis/auth';
+import {
+  activateAccount,
+  resetPasswordWithOtp,
+  sendMailRecoverPassword,
+} from '../../apis/auth';
 import { useNavigate } from 'react-router-dom';
-
-
-
-type optModelOpen = {
-  type: number;
-  open: boolean;
-  close: () => void;
-};
-
+import { optModelOpen } from '../../@types/auth';
 
 export const OtpModal = ({ type, open, close }: optModelOpen) => {
   const [optValue, setOtpValue] = useState('');
   const [email, setEmail] = useState('');
-  const [reset, setReset]=useState(false);
+  const [reset, setReset] = useState(false);
   const [resetValue, setResetValue] = useState('');
-  const [password, setPassword]=useState('');
+  const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
-
- //optverify;
+  //optverify;
   const { mutate: optVefiry, isSuccess: otpVerifySuccess } =
     useMutation(activateAccount);
 
-    //recover password;
-    const { mutate: passwordRecover, isSuccess: mailSendSuccess } =
-    useMutation(sendMailRecoverPassword);
+  //recover password;
+  const { mutate: passwordRecover, isSuccess: mailSendSuccess } = useMutation(
+    sendMailRecoverPassword,
+  );
 
-    //send resetPassword with code;
-       const { mutate: resetPassword, data:passwordResetResponse } =
-         useMutation(resetPasswordWithOtp);
+  //send resetPassword with code;
+  const { mutate: resetPassword } = useMutation(resetPasswordWithOtp);
 
-    const handleComplete = async (value: string) => {
-        const code = value;
-        await optVefiry(code);
-    };
+  const handleComplete = async (value: string) => {
+    const code = value;
+    await optVefiry(code);
+  };
 
   const handleChange = (value: any) => {
     setOtpValue(value);
@@ -61,12 +56,12 @@ export const OtpModal = ({ type, open, close }: optModelOpen) => {
     setEmail(e.target.value);
   };
 
-  const sendPasswordRecoverEmail=async()=>{
+  const sendPasswordRecoverEmail = async () => {
     await passwordRecover(email);
     sessionStorage.setItem('email', email);
-  }
+  };
 
-  const handleCompleteReset=async()=>{
+  const handleCompleteReset = async () => {
     const token = sessionStorage.getItem('reset-password') as string;
     const email = sessionStorage.getItem('email') as string;
     await resetPassword({
@@ -75,13 +70,9 @@ export const OtpModal = ({ type, open, close }: optModelOpen) => {
       password,
       email,
     });
-    // sessionStorage.clear();
+    sessionStorage.clear();
     close();
-
-    console.log("checking", true)
-
-  }
-console.log('restpass', passwordResetResponse);
+  };
   useEffect(() => {
     if (otpVerifySuccess) {
       navigate('/');
@@ -89,11 +80,10 @@ console.log('restpass', passwordResetResponse);
   }, [otpVerifySuccess]);
 
   useEffect(() => {
-  if(mailSendSuccess){
-    setReset(true)
-  }
-  }, [mailSendSuccess])
-
+    if (mailSendSuccess) {
+      setReset(true);
+    }
+  }, [mailSendSuccess]);
 
   return (
     <div>

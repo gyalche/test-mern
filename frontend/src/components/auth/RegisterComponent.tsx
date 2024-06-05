@@ -77,7 +77,7 @@ const RegisterComponent = () => {
       {isSuccess && <OtpModal type={1} open={open} close={handleClose} />}
       <div className="container">
         <div className="heading">
-          <h1>Register you account here</h1>
+          <h1>REGISTER YOUR ACCOUNT</h1>
         </div>
 
         <FormikProvider value={formik}>

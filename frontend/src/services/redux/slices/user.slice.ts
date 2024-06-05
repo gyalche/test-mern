@@ -18,7 +18,6 @@ const userSlice = createSlice({
     storeUserInfo: (state, action: PayloadAction<any>) => {
       state.userInfo = {};
       state.userInfo = action.payload;
-      console.log('action', state.userInfo);
     },
     storeAccessToken: (state, action: PayloadAction<any>) => {
       state.accessToken = '';

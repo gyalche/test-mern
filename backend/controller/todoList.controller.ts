@@ -47,7 +47,6 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
         const priority = req.query.priority ? req.query.priority : '';
 
         const query: any = role === 'user' ? { createdBy: id } : {};
-        console.log("query", query)
         if (title) {
             query.title = new RegExp(title, 'i');
         }

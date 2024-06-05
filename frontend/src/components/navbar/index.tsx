@@ -8,18 +8,29 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import { getUserInfo, storeUserInfo } from '../../services/redux/slices/user.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const settings = ['Profile', 'Change password', 'Logout'];
 export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
+  const navigate=useNavigate()
+  const dispatch=useDispatch();
+  const user=useSelector(getUserInfo);
+  console.log("userInfo", user)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (value:string) => {
+  if(value==="Logout"){
+    dispatch(storeUserInfo({}));
+    navigate('/')
+  }
     setAnchorElUser(null);
   };
   return (
@@ -29,9 +40,13 @@ export const Navbar = () => {
       </Typography>
 
       <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+        <Tooltip title="Open">
+          <IconButton onClick={handleOpenUserMenu} sx={{border:'2px solid', maxHeight:'30px', maxWidth:'30px'}}>
+            {!user.profile?.url ? (<>
+              <p>{user?.name[0].toUpperCase()}</p>
+            </>):(
+            <Avatar alt="Remy Sharp" src={user?.profile?.url} style={{objectFit:'contain'}} />
+            )}
           </IconButton>
         </Tooltip>
         <Menu
@@ -51,7 +66,7 @@ export const Navbar = () => {
           onClose={handleCloseUserMenu}
         >
           {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <MenuItem key={setting} onClick={()=>handleCloseUserMenu(setting)}>
               <Typography textAlign="center">{setting}</Typography>
             </MenuItem>
           ))}
