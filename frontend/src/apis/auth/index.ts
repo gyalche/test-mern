@@ -14,6 +14,7 @@ export const loginUser = async (data: loginType) => {
     }
   } catch (error: any) {
     toast.error(error.response.data.message);
+    sessionStorage.clear();
     throw new Error(error.response?.data?.message || 'Login failed');
   }
 };
@@ -53,7 +54,6 @@ export const activateAccount = async (data: string) => {
     throw new Error(error?.response?.data?.message);
   }
 };
-
 //send mail to recover password;
 
 export const sendMailRecoverPassword = async (body: string) => {
@@ -75,10 +75,24 @@ export const resetPasswordWithOtp = async (body: resetPasswordType) => {
     let res = await API.put(`/auth/update-password`, body);
     if (res.data.success) {
       toast.success(res.data.message);
+      sessionStorage.clear();
       return res.data;
     }
   } catch (error: any) {
     toast.error(error.response?.data?.message);
     throw new Error(error.response?.data?.message || 'failed to reset');
+  }
+};
+
+//refresh token;
+export const newAccessTokenGenerate = async (data: any) => {
+  try {
+    let res = await API.post(`/auth/refresh-token`, data);
+    if (res.data.success) {
+      return res.data;
+    }
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+    throw new Error(error.response?.data?.message);
   }
 };

@@ -7,9 +7,9 @@ import { checkIcon, wrongIcon } from '../../assets/icons';
 import { registerUser } from '../../apis/auth';
 import { useMutation } from 'react-query';
 import { registerValidation } from '../../validationSchema';
-import { OtpModal } from '../otpModal';
+import { OtpModal } from '../modal';
 
-const inputFields = (
+export const inputFields = (
   required: boolean,
   label: string,
   getFieldPropsValue: string,

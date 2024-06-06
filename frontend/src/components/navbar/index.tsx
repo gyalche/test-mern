@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import { getUserInfo, storeUserInfo } from '../../services/redux/slices/user.slice';
+import { getUserInfo, storeAccessToken, storeRefreshToken, storeUserInfo } from '../../services/redux/slices/user.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,6 +29,8 @@ export const Navbar = () => {
   const handleCloseUserMenu = (value:string) => {
   if(value==="Logout"){
     dispatch(storeUserInfo({}));
+    dispatch(storeAccessToken(''));
+    dispatch(storeRefreshToken(''))
     navigate('/')
   }
     setAnchorElUser(null);

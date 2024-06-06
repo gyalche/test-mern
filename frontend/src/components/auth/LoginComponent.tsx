@@ -11,7 +11,7 @@ import {
   storeRefreshToken,
   storeUserInfo
 } from '../../services/redux/slices/user.slice';
-import { OtpModal } from '../otpModal';
+import { OtpModal } from '../modal';
 
 const inputFields = (
   required: boolean,
@@ -75,7 +75,6 @@ const LoginComponent = () => {
         navigate('/home');
     }
   }, [isSuccess]);
-
   
   return (
     <>

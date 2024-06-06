@@ -11,7 +11,8 @@ export type resetPasswordType = {
 };
 
 export type optModelOpen = {
-  type: number;
+  type?: number;
   open: boolean;
   close: () => void;
+ 
 };
