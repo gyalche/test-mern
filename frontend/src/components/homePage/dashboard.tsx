@@ -18,6 +18,7 @@ import { priorityColor } from '../../utils';
 import { getUserInfo } from '../../services/redux/slices/user.slice';
 import { getAllUsersData } from '../../apis/admin';
 import DisplayTodo from './DisplayTodo';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const Dashboard = () => {
   const [priority, setPriority] = useState('');
@@ -108,8 +109,10 @@ const Dashboard = () => {
               label="Priority"
             />
           )}
-
-          <Datepicker value={date} setValue={setDate} />
+          <>
+            <Datepicker value={date} setValue={setDate} />
+            {date && <ClearIcon style={{color:'red', marginLeft:'-15px', cursor:'pointer'}} onClick={()=>setDate('')}/>}
+          </>
         </div>
         {user?.role === 'admin' && (
           <div className="user-task">
