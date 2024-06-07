@@ -25,7 +25,7 @@ cd frotned-> npm run dev | cd backend->nodemon
 ```
 ## To run test cases
 ```bash
-cd frotned-> 'npm run test' | cd backend->'npm run test' || for integration test run 'npm run cypress'
+ cd backend->'npm run test' || for integration test run 'npm run cypress'
 ```
 ## FEATURES
 
