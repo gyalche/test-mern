@@ -11,7 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { optModelOpen } from '../../@types/auth';
 
-export const OtpModal = ({ type, open, close }: optModelOpen) => {
+export const MyModal = ({ type, open, close }: optModelOpen) => {
   const [optValue, setOtpValue] = useState('');
   const [email, setEmail] = useState('');
   const [reset, setReset] = useState(false);

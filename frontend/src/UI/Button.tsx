@@ -5,15 +5,10 @@ interface MyButtonProps {
   text: string;
   isLoading?: boolean;
   variant?: 'text' | 'outlined' | 'contained';
-  fullWidth?:boolean;
+  fullWidth?: boolean;
 }
 
-const MyButton = ({
-  type,
-  text,
-  isLoading,
-  variant,
-}: MyButtonProps) => {
+const MyButton = ({ type, text, isLoading, variant }: MyButtonProps) => {
   return (
     <Button
       type={type}

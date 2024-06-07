@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { ThemeProvider } from '@emotion/react';
-import theme from './theme/index.ts';
+import theme from '../theme.ts';
 import './styles/global.scss';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';

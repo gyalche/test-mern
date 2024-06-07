@@ -9,9 +9,9 @@ import { loginUser } from '../../apis/auth';
 import {
   storeAccessToken,
   storeRefreshToken,
-  storeUserInfo
+  storeUserInfo,
 } from '../../services/redux/slices/user.slice';
-import { OtpModal } from '../modal';
+import { MyModal } from '../modal';
 
 const inputFields = (
   required: boolean,
@@ -68,17 +68,17 @@ const LoginComponent = () => {
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   useEffect(() => {
-    if(isSuccess){
-        dispatch(storeUserInfo(userData?.data));
-        dispatch(storeAccessToken(userData?.access_token));
-        dispatch(storeRefreshToken(userData?.refresh_token));
-        navigate('/home');
+    if (isSuccess) {
+      dispatch(storeUserInfo(userData?.data));
+      dispatch(storeAccessToken(userData?.access_token));
+      dispatch(storeRefreshToken(userData?.refresh_token));
+      navigate('/home');
     }
   }, [isSuccess]);
-  
+
   return (
     <>
-      {open && <OtpModal type={type} open={open} close={handleClose} />}
+      {open && <MyModal type={type} open={open} close={handleClose} />}
       <div className="container">
         <div className="heading">
           <h1>LOGIN</h1>

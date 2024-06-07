@@ -7,7 +7,7 @@ import { checkIcon, wrongIcon } from '../../assets/icons';
 import { registerUser } from '../../apis/auth';
 import { useMutation } from 'react-query';
 import { registerValidation } from '../../validationSchema';
-import { OtpModal } from '../modal';
+import { MyModal } from '../modal';
 
 export const inputFields = (
   required: boolean,
@@ -74,7 +74,7 @@ const RegisterComponent = () => {
 
   return (
     <>
-      {isSuccess && <OtpModal type={1} open={open} close={handleClose} />}
+      {isSuccess && <MyModal type={1} open={open} close={handleClose} />}
       <div className="container">
         <div className="heading">
           <h1>REGISTER YOUR ACCOUNT</h1>

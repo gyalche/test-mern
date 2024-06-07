@@ -16,5 +16,4 @@ export const addToDo = Yup.object().shape({
   description: Yup.string()
     .min(10, 'Description must be atleast 10 character')
     .required('please enter password'),
-  
 });

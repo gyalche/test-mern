@@ -6,8 +6,8 @@ import ContentWrapper from '../../contentWrapper/contentWrapper';
 import Dashboard from '../../components/homePage/dashboard';
 
 const HomePage = () => {
-    const user = useSelector(getUserInfo);
-    console.log('the user', user);
+  const user = useSelector(getUserInfo);
+  console.log('the user', user);
   return (
     <PrivateRoute>
       <ContentWrapper>

@@ -3,6 +3,7 @@ import Login from '../pages/(auth)/login';
 import Register from '../pages/(auth)/Register';
 import HomePage from '../pages/homepage';
 import NotFound from '../pages/NotFound';
+import CompletedTasks from '../pages/completedTask';
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +17,10 @@ export const router = createBrowserRouter([
   {
     path: '/home',
     element: <HomePage />,
-    children: [{}],
+  },
+  {
+    path: '/task-completed',
+    element: <CompletedTasks />,
   },
   {
     path: '*',

@@ -12,7 +12,6 @@ const initialState: userType = {
 };
 const userSlice = createSlice({
   name: 'user',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     storeUserInfo: (state, action: PayloadAction<any>) => {

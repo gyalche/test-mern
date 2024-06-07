@@ -1,15 +1,19 @@
-import { today } from "../constants";
-
+import { today } from '../constants';
 
 type dateType = {
   value: any;
   setValue: any;
 };
 
-const Datepicker = ({value, setValue}:dateType) => {
-
+const Datepicker = ({ value, setValue }: dateType) => {
   return (
-    <input className='date' type='date' value={value} onChange={(e)=>setValue(e.target.value)} max={today}/>
+    <input
+      className="date"
+      type="date"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      max={today}
+    />
   );
 };
 

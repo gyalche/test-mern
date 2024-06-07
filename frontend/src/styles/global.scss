@@ -37,6 +37,17 @@
     @content;
   }
 }
+
+@mixin display-flex-align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin display-flex-align-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
 @mixin display-center-column {
   display: flex;
   align-items: center;
@@ -48,8 +59,14 @@
   justify-content: center;
 }
 
-@mixin display-modal{
-    position: absolute;
+@mixin display-flex-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin display-modal {
+  position: absolute;
   top: 50%;
   left: 50%;
   min-height: 300px;
@@ -64,6 +81,16 @@
   gap: 20px;
 }
 
+@mixin button-color {
+  font-size: 12px;
+  background: rgb(84, 84, 160);
+  border: none;
+  padding: 5px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
 .layout {
   width: 100%;
   height: 100vh;
@@ -72,10 +99,22 @@
 .navbar {
   background-color: var(--background-nav);
   height: 70px;
-  display: flex;
-  align-items: center;
   padding: 20px;
   justify-content: space-between;
+  @include display-flex-space-between;
+  flex-wrap: wrap;
+  .nav-end {
+    min-width: 200px;
+    @include display-flex-space-between;
+
+    p {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    p:hover {
+      color: green;
+    }
+  }
 }
 
 //login page;
@@ -146,7 +185,7 @@
 
 //OPT modal design;
 .otp-modal {
-@include display-modal;
+  @include display-modal;
   .optInput {
     height: 250px;
     @include display-flex-center;
@@ -162,79 +201,195 @@
 .textAlignEnd:hover {
   color: blue;
 }
-.Error404{
-  width:100%;
-  height:100vh;
+.Error404 {
+  width: 100%;
+  height: 100vh;
   @include display-flex-center;
 }
 
 //content wrapper;
-.wrap-content{
-  width:100%;
-  padding:50px;
-  margin-top:50px;
+.wrap-content {
+  width: 100%;
+  padding: 50px;
+  margin-top: 50px;
+  position: relative;
 }
-.main-todo{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  .todo-add{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-  }
-  .search-filter{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    flex-direction:row;
-    gap:20px;
+.main-todo {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 20px;
+  .todo-add {
+    display: flex;
+    align-items: center;
     justify-content: flex-end;
-    margin-top:20px;
-    @include for-phone-only(){
-      gap:10px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
+  }
+  .search-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    @include for-phone-only() {
+      gap: 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
     }
   }
-  .date{
-    padding:7px;
-    border:1px solid gray;
-    border-radius:5px;
+  .date {
+    padding: 7px;
+    border: 1px solid gray;
+    border-radius: 5px;
   }
 }
-.todo-modal{
+.todo-modal {
   @include display-modal;
-  width:50%;
-  height:calc(100vh - 30vh);
-  padding:50px;
+  width: 50%;
+  height: calc(100vh - 30vh);
+  padding: 50px;
 }
-.todo-list-data{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:flex-start;
-    justify-content:flex-start;
-    gap:30px;
-    margin-top:60px;
-    @include for-phone-only(){
-     @include display-flex-center;
-    }
-    @include for-tablet-portrait-up(){
-      @include display-flex-center;
-    }
+.todo-list-data {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: flex-start;
+  padding: 10px;
+  gap: 30px;
+  margin-top: 60px;
+  @include for-phone-only() {
+    @include display-flex-center;
+  }
+  @include for-tablet-portrait-up() {
+    @include display-flex-center;
+  }
 
-.mytodos{
-  min-width:250px;
-  min-height:280px;
-  box-shadow:var(--box-shadow);
-      @include for-tablet-portrait-up(){
-      @include display-flex-center;
-
+  .mytodos {
+    display: flex;
+    // min-width:250px;
+    max-width: 240px;
+    border-radius: 10px;
+    min-height: 240px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: var(--box-shadow);
+    .title-priority {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      p {
+        font-weight: bold;
+      }
+      .priority {
+        @include display-flex-align-center;
+        min-width: 60px;
+        color: white;
+      }
     }
-  @include for-phone-only(){
-     @include display-flex-center;
-     width:100%;
+    .description {
+      border: 1px solid silver;
+      padding: 5px;
+      width: 100%;
+      height: 100px;
+      border-radius: 4px;
+      p {
+        text-align: justify;
+        max-width: 100%;
+      }
     }
+    .create-update {
+      display: flex;
+      gap: 10px;
+    }
+    @mixin add-complete() {
+      width: 100%;
+      @include display-flex-align-end;
+      button {
+        @include button-color;
+      }
+      button:hover {
+        background-color: green;
+        transition: 1s all ease-in-out;
+      }
+    }
+    .add-complete {
+      @include add-complete;
+    }
+    .add-incomplete {
+      width: 100%;
+      @include display-flex-align-end;
+      button {
+        font-size: 12px;
+        background: rgb(141, 48, 12);
+        border: none;
+        padding: 5px;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: rgb(205, 73, 73);
+        transition: 2s all ease-in-out;
+      }
+    }
+    .complete {
+      width: 100%;
+      @include display-flex-align-end;
+      button {
+        font-size: 12px;
+        background: green;
+        border: none;
+        padding: 5px;
+        border-radius: 10px;
+        color: white;
+      }
+      button:hover {
+        background-color: rgb(95, 158, 95);
+        transition: 2s all ease-in-out;
+      }
+    }
+  }
 }
+.pagination {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 10px 50px;
+  justify-content: flex-end;
+}
+.remove {
+  width: 100%;
+  @include display-flex-space-between();
+}
+
+.update-delete {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: space-between;
+  .update-complete {
+    button {
+      @include button-color;
+      min-width: 100px;
+    }
+    button:hover {
+      background-color: rgb(127, 124, 124);
+      transition: 1s all ease-in-out;
+    }
+  }
+  .delete-complete {
+    button {
+      @include button-color;
+      min-width: 100px;
+    }
+    button:hover {
+      background-color: rgb(243, 9, 9);
+      transition: 1s all ease-in-out;
+    }
+  }
 }

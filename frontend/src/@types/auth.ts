@@ -14,5 +14,10 @@ export type optModelOpen = {
   type?: number;
   open: boolean;
   close: () => void;
- 
 };
+
+export interface todosType extends optModelOpen {
+  update?: boolean;
+  data?: any;
+  fetchUpdate?: () => void;
+}
