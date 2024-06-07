@@ -111,7 +111,12 @@ const Dashboard = () => {
           )}
           <>
             <Datepicker value={date} setValue={setDate} />
-            {date && <ClearIcon style={{color:'red', marginLeft:'-15px', cursor:'pointer'}} onClick={()=>setDate('')}/>}
+            {date && (
+              <ClearIcon
+                style={{ color: 'red', marginLeft: '-15px', cursor: 'pointer' }}
+                onClick={() => setDate('')}
+              />
+            )}
           </>
         </div>
         {user?.role === 'admin' && (
