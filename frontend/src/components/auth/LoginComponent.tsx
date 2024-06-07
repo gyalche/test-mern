@@ -1,12 +1,13 @@
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MyButton from '../../UI/Button';
 import { InputComponent } from '../../UI/InputComponent';
 import { loginUser } from '../../apis/auth';
 import {
+  getUserInfo,
   storeAccessToken,
   storeRefreshToken,
   storeUserInfo,
@@ -43,6 +44,8 @@ const LoginComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const user = useSelector(getUserInfo);
+
   const forgotPassword = () => {
     setOpen(true);
     setType(2);
@@ -75,6 +78,12 @@ const LoginComponent = () => {
       navigate('/home');
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (user?.name) {
+      navigate('/home');
+    }
+  }, []);
 
   return (
     <>

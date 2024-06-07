@@ -2,11 +2,9 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type userType = {
   taskCompletedList: Array<any>;
-  updateFetch: boolean;
 };
 const initialState: userType = {
   taskCompletedList: [],
-  updateFetch: false,
 };
 const taskSlice = createSlice({
   name: 'task',
@@ -21,16 +19,11 @@ const taskSlice = createSlice({
       );
       state.taskCompletedList.splice(index, 1);
     },
-    setUpdateFetch: (state, action: PayloadAction<boolean>) => {
-      state.updateFetch = action.payload;
-    },
   },
 });
 
-export const { storTaskComplete, removeIndividalTask, setUpdateFetch } =
-  taskSlice.actions;
+export const { storTaskComplete, removeIndividalTask } = taskSlice.actions;
 
 export const getCompletedTaskList = (state: any) =>
   state?.task?.taskCompletedList;
-export const getUpdateFetch = (state: any) => state?.task.updateFetch;
 export default taskSlice.reducer;

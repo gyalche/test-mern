@@ -11,7 +11,6 @@
   --box-shadow: 0px 2px 22px -7px rgba(150, 131, 150, 1);
 }
 
-//media query;
 @mixin for-phone-only {
   @media (max-width: 599px) {
     @content;
@@ -392,4 +391,56 @@
       transition: 1s all ease-in-out;
     }
   }
+}
+.user-info {
+  width: 100%;
+  @include display-flex-align-center();
+  .user-info-inputs {
+    max-width: 40%;
+    @include for-phone-only() {
+      min-width: 90%;
+    }
+    @include for-desktop-up() {
+      width: 60%;
+    }
+  }
+  .user-info-profile {
+    @include display-flex-align-center();
+    width: 100%;
+    padding: 10px;
+    .user-profile {
+      height: 80px;
+      width: 80px;
+      border: 1px solid gray;
+      border-radius: 50%;
+      object-fit: contain;
+      position: relative;
+      @include display-flex-align-center();
+      .add-profile {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        z-index: 999;
+        border-radius: 50%;
+        background-color: whitesmoke;
+        top: 50px;
+        left: 50px;
+        cursor: pointer;
+        @include display-flex-align-center();
+      }
+      .add-profile:hover {
+        background-color: rgb(222, 216, 216);
+        transition: 1s all ease-in-out;
+      }
+      .user-img {
+        height: 50px;
+        object-fit: contain;
+      }
+    }
+  }
+}
+.user-task {
+  width: 100%;
+  @include display-flex-align-center();
+  gap: 20px;
 }

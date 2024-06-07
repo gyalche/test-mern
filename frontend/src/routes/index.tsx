@@ -4,6 +4,8 @@ import Register from '../pages/(auth)/Register';
 import HomePage from '../pages/homepage';
 import NotFound from '../pages/NotFound';
 import CompletedTasks from '../pages/completedTask';
+import UserDetailsPage from '../pages/(auth)/userDetails';
+import PasswordChange from '../pages/(auth)/changePassword';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ export const router = createBrowserRouter([
   {
     path: '/task-completed',
     element: <CompletedTasks />,
+  },
+  {
+    path: '/user-info',
+    element: <UserDetailsPage />,
+  },
+  {
+    path: '/change-password',
+    element: <PasswordChange />,
   },
   {
     path: '*',

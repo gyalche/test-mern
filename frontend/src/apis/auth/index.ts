@@ -96,3 +96,45 @@ export const newAccessTokenGenerate = async (data: any) => {
     throw new Error(error.response?.data?.message);
   }
 };
+
+//upload photo;
+export const uploadPhoto = async (data: any) => {
+  try {
+    let res = await API.patch(`/auth/upload-photo`, { profile: data });
+    if (res.data.success) {
+      toast.success(res.data.message);
+      return res.data;
+    }
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+    throw new Error(error.response?.data?.message);
+  }
+};
+
+//update user;
+export const updateUser = async (data: any) => {
+  try {
+    let res = await API.put(`/auth/update-user`, data);
+    if (res.data.success) {
+      toast.success(res.data.message);
+      return res.data;
+    }
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+    throw new Error(error.response?.data?.message);
+  }
+};
+
+//change password;
+export const changePassword = async (data: any) => {
+  try {
+    let res = await API.patch(`/auth/change-password`, data);
+    if (res.data.success) {
+      toast.success(res.data.message);
+      return res.data;
+    }
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+    throw new Error(error.response?.data?.message);
+  }
+};

@@ -47,6 +47,12 @@ export const Navbar = () => {
       dispatch(storeRefreshToken(''));
       navigate('/');
     }
+    if (value === 'My account') {
+      navigate('/user-info');
+    }
+    if (value === 'Change password') {
+      navigate('/change-password');
+    }
     setAnchorElUser(null);
   };
 

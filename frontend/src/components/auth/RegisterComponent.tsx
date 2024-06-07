@@ -1,13 +1,13 @@
 import { FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import MyButton from '../../UI/Button';
-import { InputComponent } from '../../UI/InputComponent';
 import { Form } from 'react-router-dom';
 import { checkIcon, wrongIcon } from '../../assets/icons';
 import { registerUser } from '../../apis/auth';
 import { useMutation } from 'react-query';
 import { registerValidation } from '../../validationSchema';
 import { MyModal } from '../modal';
+import { InputComponent } from '../../UI/InputComponent';
 
 export const inputFields = (
   required: boolean,

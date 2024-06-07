@@ -12,9 +12,8 @@ import { createTodoList, updateTodo } from '../../apis/todos';
 import { addToDo } from '../../validationSchema';
 import { todosType } from '../../@types/auth';
 
-export const AddTodo = ({ open, close, update, data,  }: todosType) => {
+export const AddTodo = ({ open, close, update, data }: todosType) => {
   const [priority, setPriority] = useState(update ? data?.priority : 'high');
-
 
   const { mutate: addToDoTask, isSuccess } = useMutation(
     'create-todo',
@@ -38,10 +37,8 @@ export const AddTodo = ({ open, close, update, data,  }: todosType) => {
       val.priority = priority;
       if (update) {
         await updateTodoData({ id: data?._id, body: val });
-         
       } else {
         await addToDoTask(val);
-        console.log('values', val);
       }
     },
   });
@@ -53,7 +50,6 @@ export const AddTodo = ({ open, close, update, data,  }: todosType) => {
       close();
     }
   }, [close, isSuccess, updateSuccess]);
-  console.log('isSuccess', updateSuccess);
   return (
     <Modal
       open={open}

@@ -17,3 +17,9 @@ export const addToDo = Yup.object().shape({
     .min(10, 'Description must be atleast 10 character')
     .required('please enter password'),
 });
+export const updateValidation = Yup.object().shape({
+  name: Yup.string()
+    .min(3, 'must be 3 character')
+    .max(20, 'cannot be more than 20 character'),
+  email: Yup.string().email().required('please enter email'),
+});
