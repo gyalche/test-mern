@@ -12,12 +12,11 @@ const todoSchema = new Schema<TodoTypes>({
         type: String,
         default: '',
         trim: true,
-
     },
     priority: {
         type: String,
         enum: ['low', 'medium', 'high'],
-        default: 'low'
+        default: 'high'
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

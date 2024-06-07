@@ -15,9 +15,9 @@ userRoute.post('/register', registerValidation, userRegister)
 userRoute.post('/activate', activateUser)
 userRoute.post('/login', userLogin)
 userRoute.post('/forgot-password', forgotPassword)
+userRoute.post('/refresh-token', refreshToken)
 
 //get request
-userRoute.get('/refresh-token', refreshToken)
 userRoute.get('/user', authentication, getUserInfo)
 
 //put && patch;

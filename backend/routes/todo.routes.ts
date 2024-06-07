@@ -15,7 +15,7 @@ todoRoutes.post(`/todo`, authentication, todoValidation, createTodoList);
 todoRoutes.get(`/todo`, authentication, getTodoList);
 
 //update;
-todoRoutes.put('/todo/:id', authentication, todoValidation, updateTodoList)
+todoRoutes.put('/todo/:id', authentication, updateTodoList)
 
 //delete
 todoRoutes.delete('/todo/:id', authentication, deleteTask)

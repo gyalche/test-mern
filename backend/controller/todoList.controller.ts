@@ -63,9 +63,9 @@ export const getTodoList = catchAsyncError(async (req: any, res: Response, next:
 
         const todo = await todoModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
         console.log(todo)
-        if (!todo.length) {
-            return next(new ErrorHandler(400, 'No todo list found'))
-        }
+        // if (!todo.length) {
+        //     return next(new ErrorHandler(400, 'No todo list found'))
+        // }
         const totalData = await todoModel.countDocuments(query)
         res.status(200).json({
             success: true,
@@ -93,9 +93,9 @@ export const updateTodoList = catchAsyncError(async (req: any, res: Response, ne
         if (!verifyUserCreated) {
             return next(new ErrorHandler(400, 'No task found with given id'))
         }
-
+        
         if (String(userId) !== String(verifyUserCreated?.createdBy)) {
-            return next(new ErrorHandler(400, 'You are not authorized to delete  this task'));
+            return next(new ErrorHandler(404, 'You have no access to update'));
         }
         const todo = await todoModel.findByIdAndUpdate(id, { $set: req.body }, { new: true });
         res.status(200).json({
@@ -122,7 +122,7 @@ export const deleteTask = catchAsyncError(async (req: any, res: Response, next: 
             return next(new ErrorHandler(400, 'No task found with given id'))
         }
         if (String(userId) !== String(verifyUserCreated?.createdBy)) {
-            return next(new ErrorHandler(400, 'Unable to delete'));
+            return next(new ErrorHandler(400, 'You dont have access to delete'));
         }
         const todo = await todoModel.findByIdAndDelete(id);
         res.status(200).json({

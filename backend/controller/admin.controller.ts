@@ -3,7 +3,6 @@ import { catchAsyncError } from "../middleware/catchAsyncError";
 import userModel from "../model/user.model";
 import ErrorHandler from "../utils/error/errorHandler";
 
-
 //get all user;
 export const getAllUsers = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
     try {
@@ -13,14 +12,10 @@ export const getAllUsers = catchAsyncError(async (req: any, res: Response, next:
 
         const name = req.query.name || '';
         const date = req.query.date || ''
-        const priority = req.query.priority ? req.query.priority : '';
 
         const query: any = {}
         if (name) {
             query.name = new RegExp(name, 'i');
-        }
-        if (priority) {
-            query.priority = priority;
         }
         if (date) {
             const startDate = new Date(`${date}T00:00:00.000Z`);
@@ -32,6 +27,7 @@ export const getAllUsers = catchAsyncError(async (req: any, res: Response, next:
         const totalData = await userModel.countDocuments(query);
         return res.status(200).json({
             status: 200,
+            success:true,
             message: 'successfull',
             limit,
             totalPage: Math.ceil(totalData / limit),
